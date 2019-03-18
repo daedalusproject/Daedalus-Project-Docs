@@ -8,5 +8,13 @@ Docs are generated using [Hugo](https://gohugo.io/).
 Serve Hugo with live reload
 
 ```
-hugo server -D --baseURL http://daedalus-project.local/docs --bind $YOUR_IP_ADDRESS
+hugo server -D --baseURL http://docs.daedalus-project.local --bind $YOUR_IP_ADDRESS
 ```
+
+## Deploy website
+
+``
+hugo -s .
+```
+
+Html files are generate under **public** folder.
