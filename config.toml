@@ -1,53 +1,34 @@
-baseURL = "https://daedalus-project.io/docs/"
+baseURL = "/"
 
-languageCode = "en-EN"
-title = "Daedalus Proyect Docs"
-theme = "hyde-y"
+languageCode = "en-us"
+DefaultContentLanguage = "en"
+title = "Daedalus Projct Documentation"
+theme = "docdock"
+pygmentsCodeFences = true
+pygmentsStyle = "monokailight"
 
-metaDataFormat = "yaml"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir= false
+enableMissingTranslationPlaceholders = false
 
-paginate = 10
-paginatePath = "page"
-
-copyright = "(c) 2019 Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>."
-
-[permalinks]
-    post = "/:year/:month/:day/:slug/"
-    code = "/:slug/"
-
-[taxonomies]
-    tag = "tags"
-    topic = "topics"
-
-[author]
-    name = "a-castellano"
-    email = "alvaro.castellano.vela@gmail.com"
-
-#
-# All parameters below here are optional and can be mixed and matched.
-#
 [params]
-    # You can use markdown here.
-    brand = "Daedalus Project"
-    topline = "Offical Docs"
-    footline = "code with <i class='fa fa-heart'></i>"
+showVisitedLinks = true # default is false
+themeStyle = "original" # "original" or "flex" # default "flex"
+themeVariant = "blue" # choose theme variant "green", "gold" , "gray", "blue" (default)
+ordersectionsby = "weight" # ordersectionsby = "title"
+disableHomeIcon = false # default is false
+disableSearch = false # default is false
+disableNavChevron = false # set true to hide next/prev chevron, default is false
+highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
+menushortcutsnewtab = false # set true to open shortcuts links to a new tab/window
+enableGitInfo = true
 
-    # Sidebar position
-    # false, true, "left", "right"
-    sidebar = "left"
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
 
-    # Text for the top menu link, which goes the root URL for the site.
-    # Default (if omitted) is "Home".
-    home = "home"
 
-    # Select a syntax highight for highlight.js
-    # Check the static/css/highlight directory for options.
-    # Leave unset to fall back to default hugo highlighter instead of highlight.js
-    highlight = "default"
-
-    github = "daedalusproject" # Your Github profile ID
-
-    # Sidebar RSS link: will only show up if there is a RSS feed
-    # associated with the current page
-    rss = true
-
+[[menu.shortcuts]]
+name = "<i class='fa fa-bookmark'></i> <label>Project Repos</label>"
+identifier = "projectrepos"
+url = "https://git.daedalus-project.io/explore/groups?nav_source=navbar"
+weight = 10

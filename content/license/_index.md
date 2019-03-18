@@ -1,3 +1,8 @@
++++
+title="Project License"
+weight = 9999
++++
+
 GNU General Public License
 ==========================
 
