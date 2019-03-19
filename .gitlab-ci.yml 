@@ -1,7 +1,7 @@
 stages:
     - build
 
-build_docs
+build_docs:
     stage: build
     image: daedalusproject/base_hugo
     script:
