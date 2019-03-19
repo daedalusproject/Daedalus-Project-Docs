@@ -5,4 +5,4 @@ build_docs:
     stage: build
     image: daedalusproject/base_hugo
     script:
-        - hugo -s --minify .
+        - hugo --minify -s .
