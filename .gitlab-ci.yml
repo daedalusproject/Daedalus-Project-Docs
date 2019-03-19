@@ -1,0 +1,57 @@
+stages:
+    - build
+    - deploy
+
+build_docs:
+    stage: build
+    image: daedalusproject/base_hugo
+    before_script:
+        - git submodule sync --recursive
+        - git submodule update --init --recursive
+    script:
+        - hugo --minify -s .
+    artifacts:
+        paths:
+        - public
+        expire_in: 5 minutes
+
+deploy_develop_image:
+    stage: deploy
+    image: docker:stable
+    script:
+        - IMAGENAME=daedalus-project-docs-develop
+        - RELEASEDATE=$(date)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}"
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    dependencies:
+    - build_docs
+    only:
+    - /^develop$/
+
+deploy_release_image:
+    stage: deploy
+    image: docker:stable
+    script:
+        - IMAGENAME=daedalus-project-docs
+        - RELEASEDATE=$(date)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"
+        - docker push daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    dependencies:
+    - build_docs
+    only:
+    - /^v-.*$/
