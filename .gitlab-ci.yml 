@@ -1,5 +1,5 @@
 stages:
-    - buil
+    - build
 
 build_docs
     stage: build
