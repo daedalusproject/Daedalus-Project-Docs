@@ -1,0 +1,8 @@
+stages:
+    - buil
+
+build_docs
+    stage: build
+    image: daedalusproject/base_hugo
+    script:
+        - hugo -s --minify .

@@ -13,8 +13,8 @@ hugo server -D --baseURL http://docs.daedalus-project.local --bind $YOUR_IP_ADDR
 
 ## Deploy website
 
-``
-hugo -s .
+```
+hugo -s --minify .
 ```
 
 Html files are generate under **public** folder.
