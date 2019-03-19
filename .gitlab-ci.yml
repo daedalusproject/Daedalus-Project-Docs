@@ -53,3 +53,5 @@ deploy_release_image:
         - docker rmi "${IMAGENAME}"
     dependencies:
     - build_docs
+    only:
+    - /^v-.*$/
