@@ -16,6 +16,7 @@ deploy_develop_image:
     stage: deploy
     image: docker:stable
     script:
+        - ls -lahrt public
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
         - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
