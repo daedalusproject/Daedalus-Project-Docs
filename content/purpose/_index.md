@@ -15,7 +15,7 @@ You maybe start installing and configuring your first *LAMP* stack and you know,
 
 Few hours later, angry customer calls your boss telling him that his blog is not running, some dev has dropped blog's databse because he or she thought that it was his/her cumputer instead of production one...
 <center>
-  <img src="/static/images/dropdatabase.jpg" alt="What have you done" width=50% />
+  <img src="/images/dropdatabase.jpg" alt="What have you done" width=50% />
 </center>
 
 ## Growing up
@@ -26,7 +26,7 @@ So, everithing is pretty and able to be managed until there arrives a new reques
 
 But, wait a minute, there are new blogs comming. Are you supposed to create new blogs doing again same service provision? Are you going to paste again that configs. What happens if there is a bug in your web-server config? Are you supossed to change by hand all servers? You start having a bad feeling about this.
 <center>
-  <img src="/static/images/thefuture.jpg" alt="Are we doomed?" width=40% />
+  <img src="/images/thefuture.jpg" alt="Are we doomed?" width=40% />
 </center>
 
 After looking in the Internet a solution comes up, so much sysadmins and developrs had the same problem and they created automated config managers, some of them look [marvelous](https://www.ansible.com/). You already had written some [cool scripts](https://github.com/a-castellano/nextcloud_backups_aws_s3) but this concepts is beyong that. Looking forward for a better future you begin to learn how to orchestrate your infra using those tools.
@@ -40,7 +40,7 @@ Some customers have their own devlopment team for their blogs, so you have a fil
 There are many more examples that probe that althought your tools work, they could work even better if you go beyond simple templating.
 
 <center>
-  <img src="/static/images/escalatedquickly.jpg" alt="That escalated quickly" width=40% />
+  <img src="/images/escalatedquickly.jpg" alt="That escalated quickly" width=40% />
 </center>
 
 There is a need for maintaining Information Systems, containing your clients info, Bussiness Inteligence platforms to deploy apps with multiple services interconected and make your infra easier to operate.
