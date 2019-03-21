@@ -5,5 +5,6 @@ Daedalus project aims to be a powerful interface for managing orchestrated appli
 ## Topics
 
 * [What Daedalus Project aims to be?](/purpose/)
+* [Requirements](/requirements/)
 * [Services](/services/)
 * [Architecture](/architecture/)

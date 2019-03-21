@@ -1,9 +1,9 @@
 +++
 title="Services"
-weight = 200
+weight = 300
 +++
 
-In the previous section we talked about orchestrating servers, managing configurations, maintaining an information system and so on. This seems to end into a huge project that will became Legacy before first demo. Daedalus Project is not a giant monolitic app, it splits into many services.
+In the [previous section](/purpose) we talked about orchestrating servers, managing configurations, maintaining an information system and so on. This seems to end into a huge project that will became Legacy before first demo. Daedalus Project is not a giant monolitic app, it splits into many services.
 
 In this section the concept of **Maze** is referenced for the first time, this concept will be introduced in the [next section](/architecture).
 
