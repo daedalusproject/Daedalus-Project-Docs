@@ -4,7 +4,7 @@ stages:
 
 build_docs:
     stage: build
-    image: daedalusproject/base_hugo
+    image: daedalusproject/base_hugo:201903220605
     before_script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
