@@ -9,7 +9,7 @@ build_docs:
         - git submodule sync --recursive
         - git submodule update --init --recursive
     script:
-        - hugo --minify -s .
+        - hugo --gc --minify -s .
     artifacts:
         paths:
         - public
