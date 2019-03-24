@@ -3,5 +3,16 @@ server {
     root /var/www/daedalus-project-docs;
     location /{
         index index.html;
+        location ~* \.(?:ico|css|js)$ {
+            expires 8h;
+            add_header Pragma public;
+            add_header Cache-Control "public";
+        }
+        location ~* \.(?:gif|jpe?g|png)$ {
+            expires 30d;
+            add_header Pragma public;
+            add_header Cache-Control "public";
+        }
+
     }
 }
