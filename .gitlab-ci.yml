@@ -9,7 +9,7 @@ build_docs:
         - git submodule sync --recursive
         - git submodule update --init --recursive
     script:
-        - hugo --minify -s .
+        - hugo --gc --minify -s .
     artifacts:
         paths:
         - public
@@ -21,11 +21,15 @@ deploy_develop_image:
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
+        - DATESTRING=$(date +%Y%m%d%H%M)
         - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${DATESTRING}"
         - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
-        - docker push daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker push daedalusproject/"${IMAGENAME}":"${DATESTRING}"
         - docker stop "${IMAGENAME}"
         - docker rm "${IMAGENAME}"
         - docker rmi "${IMAGENAME}"
@@ -40,7 +44,7 @@ deploy_release_image:
     script:
         - IMAGENAME=daedalus-project-docs
         - RELEASEDATE=$(date)
-        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/release/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
         - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"

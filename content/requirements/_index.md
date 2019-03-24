@@ -3,7 +3,7 @@ title="Requirements"
 weight = 200
 +++
 
-Every serious project must have defined requirements before start, we will never start coding without knowing what are going to do.
+Every production-ready project must have defined requirements before start, we will never start coding without knowing what are going to do.
 
 # Abstract
 
@@ -36,7 +36,7 @@ Daedalus Project manages **Projects**.
 * All mazes come with monitoring service enabled.
 * Projects have a name, description and Oracle.
 * Project's Oracle knows project data (domain names, SSL certificates), service data ( Web Server and load balancer configurations, PHP memory limits, etc ), mazes visibility between each other.
-* Project's Oracle also knows and mantanins eligible infrastructure pieces (for example, how many frontends is using this Project).
+* Project's Oracle also knows and maintains eligible infrastructure pieces (for example, how many frontends is using this Project).
 * Organizations are able to create development environments using Project's Oracle data.
   * For example, development Complex Maze is deployed using and anonymized production database copy.
 * Dadedalus Project must support many types of projects (Wordpress, Magento 1, Magento 2, Django, Catalyst, etc)
@@ -47,15 +47,15 @@ Daedalus Project manages **Projects**.
 * Extra Services can be hired hired by the Organization.
 * Projects are owned by Organizations and can be managed by the same organization or by another Organization.
 * Apart of the Organization which owns a Project, only one more Organization can Manage that Project.
-* If organizaction A wants Organization B to manage its project, A is able to choose the roles able to manage its project. For example A manages an e-commerce site and needs developers from organization B. So A is able to shate its project with B only for Project Caretaker role.
+* If organization A wants Organization B to manage its project, A is able to choose the roles able to manage its project. For example A manages an e-commerce site and needs developers from organization B. So A is able to share its project with B only for Project Caretaker role.
 
 ## Users
 
 * User belongs to one or more organizations.
 * Each user belongs 0 or more groups.
 * Each group has 0 or more roles.
-* Organzations are able to manage groups of uers with the same role. For example, an intern roles.
-* An organizacion is able to manage groups of roles, for example groups of project's caretakers. When organization A wants somre role of Organization B to manage its project, organization B is able to choose which users with that role are able to manage Orgranization A project.
+* Organizations are able to manage groups of users with the same role. For example, an intern roles.
+* An organization is able to manage groups of roles, for example groups of project's caretakers. When organization A wants some role of Organization B to manage its project, organization B is able to choose which users with that role are able to manage Organization A project.
 
 
 ## User Roles 
@@ -79,7 +79,7 @@ Organization users may have the following roles:
   * Manage mazes firewall.
   * Manage mazes developers access.
   * Set Project domains.
-  * Set SSL certifictes and configs.
+  * Set SSL certificates and configs.
   * FTP jails.
   * Any other required service parameters....
 
@@ -98,11 +98,11 @@ Organization users may have the following roles:
 * It is allowed to review health status of any organization project.
 * This user is able to access to all servers of Project Mazes.
 
-### Code deployer or condfig view roles.
+### Code deployer or config view roles.
 
-Not defined yet but we kown that has to be defined.
+Not defined yet but we know that has to be defined.
 
-## Daedalus Projecti Operator Roles
+## Daedalus Project Operator Roles
 
 ### Maze Master
 
