@@ -11,5 +11,5 @@ spec:
      paths:
      - path: /
        backend:
-         serviceName: daedalus-project-docs-develop
+         serviceName: daedalus-project-docs
          servicePort: 80

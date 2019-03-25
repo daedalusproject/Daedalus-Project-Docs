@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: daedalus-project-docs
+  labels:
+    app: daedalus-project-docs
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+      role: project-docs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+        role: project-docs
+    spec:
+      containers:
+      - name: daedalus-project-docs-nginx
+        image: daedalusproject/daedalus-project-docs:v-0.002
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 80

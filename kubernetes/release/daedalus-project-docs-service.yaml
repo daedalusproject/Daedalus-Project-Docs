@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: daedalus-project-docs
+  labels:
+    app: nginx
+    role: project-docs
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx
+    role: project-docs
