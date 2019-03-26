@@ -3,6 +3,7 @@ server {
     root /var/www/daedalus-project-docs;
     location /{
         index index.html;
-        add_header Link "</css/featherlight.min.css>; as=style; rel=preload,  </css/nucleus.css>; as=style; rel=preload";
+        add_header Link "</css/featherlight.min.css>; as=style; rel=preload";
+        add_header Link "</css/nucleus.css>; as=style; rel=preload";
     }
 }
