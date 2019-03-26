@@ -20,9 +20,9 @@ get_http2_preload_links:
     stage: http2
     image: daedalusproject/base:201903220605
     script:
-        - for link in $(grep -o "src=[^>]*>" index.html | sed 's/^src=\([^>]*\)>$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=script\";"; done > links
-        - for link in $(grep -o "href=[^>]*.css" index.html | sed 's/^href=\([^>]*\)$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=style\";"; done >> links
-        - for link in $(grep -o "href=[^>]*type=image" index.html | sed 's/^href=\([^ ]*\) type=image$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=image\":"; done >> links
+        - for link in $(grep -o "src=[^>]*>" public/index.html | sed 's/^src=\([^>]*\)>$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=script\";"; done > links
+        - for link in $(grep -o "href=[^>]*.css" public/index.html | sed 's/^href=\([^>]*\)$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=style\";"; done >> links
+        - for link in $(grep -o "href=[^>]*type=image" public/index.html | sed 's/^href=\([^ ]*\) type=image$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=image\":"; done >> links
     artifacts:
         paths:
         - public
