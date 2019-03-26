@@ -1,9 +1,13 @@
 server {
     listen 80 default_server;
     root /var/www/daedalus-project-docs;
-    location /{
+    location = /{
         index index.html;
-        add_header Link "</css/featherlight.min.css>; as=style; rel=preload";
-        add_header Link "</css/nucleus.css>; as=style; rel=preload";
+        add_header Link "</css/featherlight.min.css>; rel=preload; as=style;";
+        add_header Link "</css/nucleus.css>; rel=preload; as=style;";
+        add_header Link "</theme-original/style.css>; rel=preload; as=style;";
+    }
+    location / {
+        index index.html;
     }
 }
