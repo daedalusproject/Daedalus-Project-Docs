@@ -3,5 +3,6 @@ server {
     root /var/www/daedalus-project-docs;
     location /{
         index index.html;
+        include links.conf;
     }
 }
