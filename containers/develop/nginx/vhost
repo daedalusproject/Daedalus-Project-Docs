@@ -2,6 +2,7 @@ server {
     listen 80 default_server;
     root /var/www/daedalus-project-docs;
     location /{
+        add_header Link "</css/nucleus.css>; as=style; rel=preload";
         index index.html;
     }
 }
