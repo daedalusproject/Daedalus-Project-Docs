@@ -1,5 +1,6 @@
 stages:
     - build
+    - http2
     - deploy
 
 build_docs:
@@ -14,6 +15,20 @@ build_docs:
         paths:
         - public
         expire_in: 5 minutes
+
+get_http2_preload_links:
+    stage: http2
+    image: daedalusproject/base:201903220605
+    script:
+        - for link in $(grep -o "src=[^>]*>" index.html | sed 's/^src=\([^>]*\)>$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=script\";"; done > links
+        - for link in $(grep -o "href=[^>]*.css" index.html | sed 's/^href=\([^>]*\)$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=style\";"; done >> links
+        - for link in $(grep -o "href=[^>]*type=image" index.html | sed 's/^href=\([^ ]*\) type=image$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=image\":"; done >> links
+    artifacts:
+        paths:
+        - public
+        - links
+        expire_in: 5 minutes
+
 
 deploy_develop_image:
     stage: deploy
@@ -34,7 +49,7 @@ deploy_develop_image:
         - docker rm "${IMAGENAME}"
         - docker rmi "${IMAGENAME}"
     dependencies:
-    - build_docs
+    - get_http2_preload_links
 
 deploy_release_image:
     stage: deploy
