@@ -50,6 +50,8 @@ deploy_develop_image:
         - docker rmi "${IMAGENAME}"
     dependencies:
     - get_http2_preload_links
+    only:
+    - /^develop$/
 
 deploy_release_image:
     stage: deploy
