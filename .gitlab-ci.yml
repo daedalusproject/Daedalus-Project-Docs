@@ -35,8 +35,6 @@ deploy_develop_image:
         - docker rmi "${IMAGENAME}"
     dependencies:
     - build_docs
-    only:
-    - /^develop$/
 
 deploy_release_image:
     stage: deploy
