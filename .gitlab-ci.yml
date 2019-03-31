@@ -60,6 +60,7 @@ deploy_develop_image:
     script:
         - echo $KUBE_URL
         - kubectl get pods -n daedalus-project-docs-develop
+        - kubectl get pods -n daedalus-project-docs
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
         - DATESTRING=$(date +%Y%m%d%H%M)
