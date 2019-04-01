@@ -118,6 +118,7 @@ deploy_staging_image:
         - sed -i s/__IMAGE_TAG__/"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"/g kubernetes/staging/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/staging/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/staging/daedalus-project-docs-service.yaml
+        - kubectl apply -f kubernetes/staging/ingress.yaml
     dependencies:
     - create_staging_image
     only:
@@ -161,6 +162,7 @@ deploy_release_image:
         - sed -i s/__IMAGE_TAG__/${CI_COMMIT_REF_NAME}/g kubernetes/release/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/release/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/release/daedalus-project-docs-service.yaml
+        - kubectl apply -f kubernetes/release/ingress.yaml
     dependencies:
     - build_docs
     only:
