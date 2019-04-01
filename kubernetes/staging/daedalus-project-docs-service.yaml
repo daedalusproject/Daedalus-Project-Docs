@@ -2,14 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: daedalus-project-docs-staging
-  name: daedalus-project-docs-develop
+  name: daedalus-project-docs-staging
   labels:
     app: nginx
-    role: project-docs-develop
+    role: project-docs-staging
 spec:
   ports:
   - port: 80
     targetPort: 80
   selector:
     app: nginx
-    role: project-docs-develop
+    role: project-docs-staging

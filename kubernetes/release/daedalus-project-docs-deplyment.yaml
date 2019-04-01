@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: nginx
       role: project-docs
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
@@ -22,7 +22,7 @@ spec:
         image: daedalusproject/daedalus-project-docs:__IMAGE_TAG__
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 50m
+            memory: 50Mi
         ports:
         - containerPort: 80

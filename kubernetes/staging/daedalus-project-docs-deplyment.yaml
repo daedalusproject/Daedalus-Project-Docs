@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: daedalus-project-docs-develop-staging
-  name: daedalus-project-docs-develop
+  namespace: daedalus-project-docs-staging-staging
+  name: daedalus-project-docs-staging
   labels:
-    app: daedalus-project-docs-develop
+    app: daedalus-project-docs-staging
 spec:
   selector:
     matchLabels:
       app: nginx
-      role: project-docs-develop
+      role: project-docs-staging
   replicas: 1
   template:
     metadata:
       labels:
         app: nginx
-        role: project-docs-develop
+        role: project-docs-staging
     spec:
       containers:
       - name: daedalus-project-docs-nginx
