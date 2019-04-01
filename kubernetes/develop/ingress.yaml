@@ -15,3 +15,7 @@ spec:
        backend:
          serviceName: daedalus-project-docs-develop
          servicePort: 80
+ tls:
+ - hosts:
+   - dev-docs.daedalus-project.io
+   secretName: daedalus-project-docs-develop-cert
