@@ -18,3 +18,5 @@ We should develop software not for Docker nor kubernetes directly, we don't want
 So, all our services should be platform agnostic.
 
 More info will be added soon.
+
+This is a test.
