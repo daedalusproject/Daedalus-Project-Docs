@@ -58,6 +58,7 @@ deploy_develop_image:
     stage: deploy
     image: daedalusproject/base_kubectl
     script:
+        - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - echo $KUBE_URL
         - kubectl get pods -n daedalus-project-docs-develop
         - kubectl get pods -n daedalus-project-docs
