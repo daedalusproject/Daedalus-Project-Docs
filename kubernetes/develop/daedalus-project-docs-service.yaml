@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: daedalus-project-docs-develop
   name: daedalus-project-docs-develop
   labels:
     app: nginx

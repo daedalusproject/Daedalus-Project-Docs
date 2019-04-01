@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: daedalus-project-docs
   name: daedalus-project-docs
   labels:
     app: daedalus-project-docs
@@ -18,7 +19,7 @@ spec:
     spec:
       containers:
       - name: daedalus-project-docs-nginx
-        image: daedalusproject/daedalus-project-docs:v-0.002
+        image: daedalusproject/daedalus-project-docs:__IMAGE_TAG__
         resources:
           requests:
             cpu: 100m

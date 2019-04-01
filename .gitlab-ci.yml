@@ -68,14 +68,10 @@ deploy_develop_image:
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
         - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
         - kubectl config use-context default
-        - kubectl get pods -n daedalus-project-docs-develop
-        - kubectl get pods -n daedalus-project-docs
-        - IMAGENAME=daedalus-project-docs-develop
-        - RELEASEDATE=$(date)
         - DATESTRING=$(cat timestamp/timestampfile)
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deplyment.yaml
-        - cat kubernetes/develop/daedalus-project-docs-deplyment.yaml
-        - echo $DATESTRING
+        - kubectl apply -f kubernetes/develop/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
     dependencies:
     - build_docs
 
