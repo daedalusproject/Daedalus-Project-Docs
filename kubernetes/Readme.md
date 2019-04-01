@@ -32,3 +32,5 @@ kubectl create -f develop/daedalus-project-docs-service.yaml  -n daedalus-projec
 kubectl create -f develop/ingress.yaml  -n daedalus-project-docs-develop
 ```
 
+
+k create secret tls daedalus-project-docs-develop-cert --key daedalus-project.io.key --cert daedalus-project.io.pem  -n daedalus-project-docs-develop

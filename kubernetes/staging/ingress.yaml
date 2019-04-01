@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   namespace: daedalus-project-docs-staging
-  name: daedalus-project-docs-develop-ingress
+  name: daedalus-project-docs-staging-ingress
   annotations:
     nginx.ingress.kubernetes.io/http2-push-preload: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -19,4 +19,4 @@ spec:
  tls:
  - hosts:
    - staging-docs.daedalus-project.io
-   secretName: daedalus-project-docs-develop-cert
+   secretName: daedalus-project-docs-staging-cert
