@@ -1,8 +1,8 @@
 stages:
-    - deploy
     - build
     - http2
     - docker_image
+    - deploy
 
 build_docs:
     stage: build
@@ -10,11 +10,15 @@ build_docs:
     before_script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
+        - mkdir timestamp
+        - DATESTRING=$(date +%Y%m%d%H%M)
+        - echo $DATESTRING > timestamp/timestampfile
     script:
         - hugo --gc --minify -s .
     artifacts:
         paths:
         - public
+        - timestamp
         expire_in: 5 minutes
 
 get_http2_preload_links:
@@ -28,8 +32,10 @@ get_http2_preload_links:
         paths:
         - public
         - links
+        - timestamp
         expire_in: 5 minutes
-
+    dependencies:
+    - build_docs
 
 create_develop_image:
     stage: docker_image
@@ -37,7 +43,7 @@ create_develop_image:
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
-        - DATESTRING=$(date +%Y%m%d%H%M)
+        - DATESTRING=$(cat timestamp/timestampfile)
         - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
@@ -51,8 +57,8 @@ create_develop_image:
         - docker rmi "${IMAGENAME}"
     dependencies:
     - get_http2_preload_links
-    only:
-    - /^develop$/
+      #    only:
+      #    - /^develop$/
 
 deploy_develop_image:
     stage: deploy
@@ -66,7 +72,11 @@ deploy_develop_image:
         - kubectl get pods -n daedalus-project-docs
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
-        - DATESTRING=$(date +%Y%m%d%H%M)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - echo $DATESTRING
+    dependencies:
+    - build_docs
+
 
 create_release_image:
     stage: docker_image
