@@ -1,7 +1,8 @@
 # Daedalus Project Docs
 
-Docs are generated using [Hugo](https://gohugo.io/).
+Docs [website](https://docs.daedalus-project.io/).
 
+Docs are generated using [Hugo](https://gohugo.io/).
 
 ## Develop
 
@@ -14,7 +15,11 @@ hugo server -D --baseURL http://docs.daedalus-project.local --bind $YOUR_IP_ADDR
 ## Deploy website
 
 ```
-hugo --minify -s .
+hugo --gc --minify -s .
 ```
 
 Html files are generate under **public** folder.
+
+## CI/CD
+
+[Gitlab pipelines](/.gitlab-ci.yml) control CI and deployment to Kubernetes cluster, see [/kubernetes] section for more details.
