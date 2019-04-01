@@ -1,36 +1,65 @@
-# First Kubernetes approarch
+# Kubernetes
 
-Create namespaces
+This project is deployed over Windmaker's Kubernetes cluster.
 
-```bash
-kubectl create namespace daedalus-project-docs-develop
-kubectl create namespace daedalus-project-docs
-```
+## Prerequisites
 
-## Development
-
-### Create deployment
-```bash
-kubectl create -f develop/daedalus-project-docs-deplyment.yaml  -n daedalus-project-docs-develop
-```
-
-Check pods
-```
-k get pods -n daedalus-project-docs-develop
-NAME                                             READY   STATUS    RESTARTS   AGE
-daedalus-project-docs-develop-864b65d948-zccmd   1/1     Running   0          106s
-```
-
-### Create service
-```bash
-kubectl create -f develop/daedalus-project-docs-service.yaml  -n daedalus-project-docs-develop
-```
-
-### Ingress
+As cluster admin you should create namespaces and specific service account to operate over those namespaces.
 
 ```bash
-kubectl create -f develop/ingress.yaml  -n daedalus-project-docs-develop
+kubectl apply -f setup.yaml
 ```
 
+Three namespaces will be created:
 
-k create secret tls daedalus-project-docs-develop-cert --key daedalus-project.io.key --cert daedalus-project.io.pem  -n daedalus-project-docs-develop
+* daedalus-project-docs-develop
+* daedalus-project-docs-staging
+* daedalus-project-docs
+
+Service account *gitlab-daedalus-project-deployer* is able to create and update resources in all these namespaces.
+
+## Environments
+
+There are three environments, one for each namespace:
+
+### Development
+
+Available at [dev-docs.daedalus-project.io](https://dev-docs.daedalus-project.io/).
+
+Deployed after each *develop* update.
+
+### Staging
+
+Available at [staging-docs.daedalus-project.io](https://staging-docs.daedalus-project.io/).
+
+Deployed after each *master* update.
+
+### Production
+
+Available at [docs.daedalus-project.io](https://docs.daedalus-project.io/).
+
+Deployed with each tag.
+
+## Manifests
+
+Each environments uses the same manifest names, configurations differ.
+```bash
+.
+├── develop
+│   ├── daedalus-project-docs-deplyment.yaml
+│   ├── daedalus-project-docs-service.yaml
+│   └── ingress.yaml
+```
+
+### SSL certs.
+
+Ingress used by Daedalus Projects is [NGINX Ingress Controller ](https://kubernetes.github.io/ingress-nginx/deploy/)
+
+For the time being SSL certificates are not provided automatically.
+
+For each namespace.
+```bash
+kubectl create secret tls daedalus-project-docs-develop-cert --key daedalus-project.io.key --cert daedalus-project.io.pem  -n daedalus-project-docs-develop
+kubectl create secret tls daedalus-project-docs-staging-cert --key daedalus-project.io.key --cert daedalus-project.io.pem  -n daedalus-project-docs-staging
+kubectl create secret tls daedalus-project-docs-cert --key daedalus-project.io.key --cert daedalus-project.io.pem  -n daedalus-project-docs
+```

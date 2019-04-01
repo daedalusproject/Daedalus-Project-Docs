@@ -61,6 +61,8 @@ create_develop_image:
         expire_in: 5 minutes
     dependencies:
     - get_http2_preload_links
+    only:
+    - /^develop$/
 
 deploy_develop_image:
     stage: deploy
@@ -78,6 +80,8 @@ deploy_develop_image:
         - kubectl apply -f kubernetes/develop/ingress.yaml
     dependencies:
     - create_develop_image
+    only:
+    - /^develop$/
 
 create_staging_image:
     stage: docker_image
@@ -104,7 +108,7 @@ create_staging_image:
     dependencies:
     - get_http2_preload_links
     only:
-    - /^develop$/
+    - /^master$/
 
 deploy_staging_image:
     stage: deploy
@@ -122,7 +126,7 @@ deploy_staging_image:
     dependencies:
     - create_staging_image
     only:
-    - /^develop$/
+    - /^master$/
 
 create_release_image:
     stage: docker_image
