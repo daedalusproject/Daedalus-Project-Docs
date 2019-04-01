@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: daedalus-project-docs-nginx
-        image: daedalusproject/daedalus-project-docs:__IMAGE_TAG__
+        image: daedalusproject/daedalus-project-docs-develop:__IMAGE_TAG__
         resources:
           requests:
             cpu: 50m

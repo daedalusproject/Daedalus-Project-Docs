@@ -115,7 +115,7 @@ deploy_staging_image:
         - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
         - kubectl config use-context default
         - DATESTRING=$(cat timestamp/timestampfile)
-        - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/staging/daedalus-project-docs-deplyment.yaml
+        - sed -i s/__IMAGE_TAG__/"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"/g kubernetes/staging/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/staging/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/staging/daedalus-project-docs-service.yaml
     dependencies:
