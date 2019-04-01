@@ -22,4 +22,4 @@ Html files are generate under **public** folder.
 
 ## CI/CD
 
-[Gitlab pipelines](/.gitlab-ci.yml) control CI and deployment to Kubernetes cluster, see [/kubernetes] section for more details.
+[Gitlab pipelines](/.gitlab-ci.yml) control CI and deployment to Kubernetes cluster, see [Kubernetes](/kubernetes) section for more details.
