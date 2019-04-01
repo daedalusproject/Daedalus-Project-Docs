@@ -73,6 +73,8 @@ deploy_develop_image:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
         - DATESTRING=$(cat timestamp/timestampfile)
+        - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deplyment.yaml
+        - cat kubernetes/develop/daedalus-project-docs-deplyment.yaml
         - echo $DATESTRING
     dependencies:
     - build_docs
