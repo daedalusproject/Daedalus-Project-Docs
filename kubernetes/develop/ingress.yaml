@@ -1,6 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  namespace: daedalus-project-docs-develop
   name: daedalus-project-docs-develop-ingress
   annotations:
     nginx.ingress.kubernetes.io/http2-push-preload: "true"
