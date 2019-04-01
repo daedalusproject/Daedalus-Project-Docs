@@ -1,6 +1,7 @@
 stages:
     - build
     - http2
+    - docker_image
     - deploy
 
 build_docs:
@@ -9,11 +10,15 @@ build_docs:
     before_script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
+        - mkdir timestamp
+        - DATESTRING=$(date +%Y%m%d%H%M)
+        - echo $DATESTRING > timestamp/timestampfile
     script:
         - hugo --gc --minify -s .
     artifacts:
         paths:
         - public
+        - timestamp
         expire_in: 5 minutes
 
 get_http2_preload_links:
@@ -27,16 +32,18 @@ get_http2_preload_links:
         paths:
         - public
         - links
+        - timestamp
         expire_in: 5 minutes
+    dependencies:
+    - build_docs
 
-
-deploy_develop_image:
-    stage: deploy
+create_develop_image:
+    stage: docker_image
     image: docker:stable
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
-        - DATESTRING=$(date +%Y%m%d%H%M)
+        - DATESTRING=$(cat timestamp/timestampfile)
         - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
@@ -48,13 +55,76 @@ deploy_develop_image:
         - docker stop "${IMAGENAME}"
         - docker rm "${IMAGENAME}"
         - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - get_http2_preload_links
+
+deploy_develop_image:
+    stage: deploy
+    image: daedalusproject/base_kubectl
+    script:
+        - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
+        - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
+        - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
+        - kubectl config use-context default
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - echo $DATESTRING
+        - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/develop/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
+        - kubectl apply -f kubernetes/develop/ingress.yaml
+    dependencies:
+    - create_develop_image
+
+create_staging_image:
+    stage: docker_image
+    image: docker:stable
+    script:
+        - IMAGENAME=daedalus-project-docs-develop
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/release/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"
+        - docker push daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
     dependencies:
     - get_http2_preload_links
     only:
     - /^develop$/
 
-deploy_release_image:
+deploy_staging_image:
     stage: deploy
+    image: daedalusproject/base_kubectl
+    script:
+        - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
+        - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
+        - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
+        - kubectl config use-context default
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - sed -i s/__IMAGE_TAG__/"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"/g kubernetes/staging/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/staging/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/staging/daedalus-project-docs-service.yaml
+    dependencies:
+    - create_staging_image
+    only:
+    - /^develop$/
+
+create_release_image:
+    stage: docker_image
     image: docker:stable
     script:
         - IMAGENAME=daedalus-project-docs
@@ -70,7 +140,28 @@ deploy_release_image:
         - docker stop "${IMAGENAME}"
         - docker rm "${IMAGENAME}"
         - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
     dependencies:
     - get_http2_preload_links
     only:
-    - /^v-.*$/
+    - tags
+
+deploy_release_image:
+    stage: deploy
+    image: daedalusproject/base_kubectl
+    script:
+        - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
+        - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
+        - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
+        - kubectl config use-context default
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - sed -i s/__IMAGE_TAG__/${CI_COMMIT_REF_NAME}/g kubernetes/release/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/release/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/release/daedalus-project-docs-service.yaml
+    dependencies:
+    - build_docs
+    only:
+    - tags
