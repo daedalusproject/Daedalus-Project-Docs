@@ -1,8 +1,8 @@
 stages:
+    - deploy
     - build
     - http2
     - docker_image
-    - deploy
 
 build_docs:
     stage: build
