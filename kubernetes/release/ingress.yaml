@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: daedalus-project-docs
+  name: daedalus-project-docs-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/http2-push-preload: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+ rules:
+ - host: dev-docs.daedalus-project.io
+   http:
+     paths:
+     - path: /
+       backend:
+         serviceName: daedalus-project-docs
+         servicePort: 80
+
+ tls:
+ - hosts:
+   - docs.daedalus-project.io
+   secretName: daedalus-project-docs-cert
