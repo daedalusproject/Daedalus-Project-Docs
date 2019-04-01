@@ -6,7 +6,7 @@ stages:
 
 build_docs:
     stage: build
-    image: daedalusproject/base_hugo:201903220605
+    image: daedalusproject/base_hugo:201904011951
     before_script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
@@ -23,7 +23,7 @@ build_docs:
 
 get_http2_preload_links:
     stage: http2
-    image: daedalusproject/base:201903220605
+    image: daedalusproject/base:201904011951
     script:
         - for link in $(grep -o "src=[^>]*>" public/index.html | sed 's/^src=\([^>]*\)>$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=script\";"; done > links
         - for link in $(grep -o "href=[^>]*.css" public/index.html | sed 's/^href=\([^>]*\)$/\1/'); do echo "add_header Link \"<$link>; rel=preload; as=style\";"; done >> links
@@ -61,10 +61,12 @@ create_develop_image:
         expire_in: 5 minutes
     dependencies:
     - get_http2_preload_links
+    only:
+    - /^develop$/
 
 deploy_develop_image:
     stage: deploy
-    image: daedalusproject/base_kubectl
+    image: daedalusproject/base_kubectl:201904011951
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
@@ -78,6 +80,8 @@ deploy_develop_image:
         - kubectl apply -f kubernetes/develop/ingress.yaml
     dependencies:
     - create_develop_image
+    only:
+    - /^develop$/
 
 create_staging_image:
     stage: docker_image
@@ -104,11 +108,11 @@ create_staging_image:
     dependencies:
     - get_http2_preload_links
     only:
-    - /^develop$/
+    - /^master$/
 
 deploy_staging_image:
     stage: deploy
-    image: daedalusproject/base_kubectl
+    image: daedalusproject/base_kubectl:201904011951
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
@@ -122,7 +126,7 @@ deploy_staging_image:
     dependencies:
     - create_staging_image
     only:
-    - /^develop$/
+    - /^master$/
 
 create_release_image:
     stage: docker_image
@@ -152,7 +156,7 @@ create_release_image:
 
 deploy_release_image:
     stage: deploy
-    image: daedalusproject/base_kubectl
+    image: daedalusproject/base_kubectl:201904011951
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
