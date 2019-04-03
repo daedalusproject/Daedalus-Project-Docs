@@ -15,10 +15,12 @@ Wait, we have never used Docker for any serious project neither Kubernetes but a
 
 We should develop software not for Docker nor kubernetes directly, we don't want to assume any technologies, it will make or development process slower but we don't want our software to be platform or technology dependent. Software development over the decades has bring us package management, services (systemd), /etc config files, log management and it will be a regretful error not to use all this knowledge in our project.
 
-So, all our services should be platform agnostic. All our services or projects, these docs included should be able to be deployed in bare metal, Kubernetes, serverless, etc. That is not easy but we will do our best to accomplish it.
+So, all our services should be platform agnostic, all our services and projects should be able to be deployed in bare metal, Kubernetes, serverless, etc. 
+
+That is not easy but we will do our best to accomplish it.
 
 This section is divided in the following topics:
 
 * [Repositories](/architecture/repos/)
-* Docker Images
+* [Docker Images](/architecture/dockers/)
 * Microservices mesh.
