@@ -1,8 +1,5 @@
 server {
     listen 80 default_server;
     root /var/www/daedalus-project-docs;
-    location /{
-        index index.html;
-        include links.conf;
-    }
+    include vhostlocations.conf;
 }
