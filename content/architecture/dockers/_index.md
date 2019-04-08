@@ -83,7 +83,7 @@ What about dependencies?
 
 It works! So all Daedalus Project should use inherited images from stable base images. When all our images are download many of them may share the same layers.
 
-Se we have created [Limani](https://git.daedalus-project.io/docker/Limani) repository for maintaining our base images.
+[Limani](https://git.daedalus-project.io/docker/Limani) repository has been created for maintaining our base images.
 
 ### Behaviour
 
