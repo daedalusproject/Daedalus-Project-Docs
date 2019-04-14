@@ -60,7 +60,7 @@ metadata:
   namespace: daedalus-project-docs
 ---
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: gitlab-daedalus-project-deployer
   namespace: daedalus-project-docs
@@ -70,7 +70,7 @@ rules:
   verbs: ["*"]
 ---
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: gitlab-daedalus-project-deployer
   namespace: daedalus-project-docs
@@ -84,7 +84,7 @@ roleRef:
   name: gitlab-daedalus-project-deployer
 ---
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: gitlab-daedalus-project-deployer
   namespace: daedalus-project-docs-develop
@@ -94,7 +94,7 @@ rules:
   verbs: ["*"]
 ---
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: gitlab-daedalus-project-deployer
   namespace: daedalus-project-docs-develop
@@ -108,7 +108,7 @@ roleRef:
   name: gitlab-daedalus-project-deployer
 ---
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: gitlab-daedalus-project-deployer
   namespace: daedalus-project-docs-staging
@@ -118,7 +118,7 @@ rules:
   verbs: ["*"]
 ---
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: gitlab-daedalus-project-deployer
   namespace: daedalus-project-docs-staging
