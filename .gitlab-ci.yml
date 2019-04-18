@@ -1,12 +1,12 @@
 stages:
     - build
-    - http2
+    - nginx_conf
     - docker_image
     - deploy
 
 build_docs:
     stage: build
-    image: daedalusproject/base_hugo:201904141607
+    image: daedalusproject/base_hugo:201904181205
     before_script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
@@ -21,15 +21,19 @@ build_docs:
         - timestamp
         expire_in: 5 minutes
 
-get_http2_preload_links:
-    stage: http2
-    image: daedalusproject/base_xml_utils:201904141607
+configure_nginx:
+    stage: nginx_conf
+    image: daedalusproject/base_xml_utils:201904181205
     script:
         - utils/xml2preloadlinks.sh public/sitemap.xml
+        - echo "set_real_ip_from  ${KUBE_NETWORK};" > realip.conf
+        - echo "real_ip_header    X-Forwarded-For;" >> realip.conf
+        - echo "real_ip_recursive on;" >> realip.conf
     artifacts:
         paths:
         - public
         - vhostlocations.conf
+        - realip.conf
         - timestamp
         expire_in: 5 minutes
     dependencies:
@@ -58,13 +62,13 @@ create_develop_image:
         - timestamp
         expire_in: 5 minutes
     dependencies:
-    - get_http2_preload_links
+    - configure_nginx
     only:
     - /^develop$/
 
 deploy_develop_image:
     stage: deploy
-    image: daedalusproject/base_kubectl:201904141607
+    image: daedalusproject/base_kubectl:201904181205
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
@@ -104,13 +108,13 @@ create_staging_image:
         - timestamp
         expire_in: 5 minutes
     dependencies:
-    - get_http2_preload_links
+    - configure_nginx
     only:
     - /^master$/
 
 deploy_staging_image:
     stage: deploy
-    image: daedalusproject/base_kubectl:201904141607
+    image: daedalusproject/base_kubectl:201904181205
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
@@ -148,13 +152,13 @@ create_release_image:
         - timestamp
         expire_in: 5 minutes
     dependencies:
-    - get_http2_preload_links
+    - configure_nginx
     only:
     - tags
 
 deploy_release_image:
     stage: deploy
-    image: daedalusproject/base_kubectl:201904141607
+    image: daedalusproject/base_kubectl:201904181205
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
