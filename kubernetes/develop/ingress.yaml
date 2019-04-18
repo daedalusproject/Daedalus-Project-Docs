@@ -5,6 +5,7 @@ metadata:
   name: daedalus-project-docs-develop-ingress
   annotations:
     nginx.ingress.kubernetes.io/http2-push-preload: "true"
+    nginx.ingress.kubernetes.io/use-proxy-protocol: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
  rules:
