@@ -1,6 +1,6 @@
 server {
     listen 80 default_server;
     root /var/www/daedalus-project-docs;
-    include realip.conf
+    include realip.conf;
     include vhostlocations.conf;
 }
