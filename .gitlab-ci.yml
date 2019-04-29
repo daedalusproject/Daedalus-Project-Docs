@@ -1,15 +1,21 @@
 stages:
+    - submodules
     - build
     - nginx_conf
     - docker_image
     - deploy
 
-build_docs:
-    stage: build
-    image: daedalusproject/base_hugo:201904181205
-    before_script:
+init_submodules:
+    stage: submodules
+    image: daedalusproject/base_git:201904291625
+    script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
+
+build_docs:
+    stage: build
+    image: daedalusproject/base_hugo:201904291625
+    before_script:
         - mkdir timestamp
         - DATESTRING=$(date +%Y%m%d%H%M)
         - echo $DATESTRING > timestamp/timestampfile
@@ -23,7 +29,7 @@ build_docs:
 
 configure_nginx:
     stage: nginx_conf
-    image: daedalusproject/base_xml_utils:201904181205
+    image: daedalusproject/base_xml_utils:201904291625
     script:
         - utils/xml2preloadlinks.sh public/sitemap.xml
         - echo "set_real_ip_from  ${KUBE_NETWORK};" > realip.conf
