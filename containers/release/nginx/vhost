@@ -4,19 +4,19 @@ server {
     include realip.conf;
     location /{
         index index.html;
-        location ~* \.(?:json)$ {
+        location ~* ^.+\.(?:json)$ {
             access_log off;
             expires 8h;
             add_header Pragma public;
             add_header Cache-Control "public";
         }
-        location ~* \.(?:ico|css|js)$ {
+        location ~* ^.+\.(?:ico|css|js)$ {
             access_log off;
             expires 7d;
             add_header Pragma public;
             add_header Cache-Control "public";
         }
-        location ~* \.(?:gif|jpe?g|png|woff2|svg)$ {
+        location ~* ^.+\.(?:gif|jpe?g|png|woff2|svg)$ {
             access_log off;
             expires 30d;
             add_header Pragma public;
