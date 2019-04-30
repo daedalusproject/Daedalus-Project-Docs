@@ -2,7 +2,7 @@ server {
     listen 80 default_server;
     root /var/www/daedalus-project-docs;
     include realip.conf;
-    location ~* .(png|gif|ico|jpg|jpe?g|css|js|json|svg)$ {
+    location ~* ^.+\.(png|gif|ico|jpg|jpe?g|css|js|json|svg|woff2)$ {
         access_log off;
     }
     include vhostlocations.conf;
