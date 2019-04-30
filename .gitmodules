@@ -1,4 +1,4 @@
 [submodule "themes/docdock"]
 	path = themes/docdock
     url = https://git.daedalus-project.io/external-repos/hugo-theme-docdock.git
-    branch = master
+    branch = minified
