@@ -1,7 +1,7 @@
 FROM daedalusproject/base_nginx_daedalus_light:201904300501
 MAINTAINER Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>
 
-COPY containers/release/nginx/vhost /etc/nginx/sites-enabled/default
+COPY containers/develop/nginx/vhost /etc/nginx/sites-enabled/default
 COPY containers/conf/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY vhostlocations.conf /etc/nginx/vhostlocations.conf
 COPY realip.conf /etc/nginx/realip.conf
