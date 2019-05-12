@@ -10,13 +10,18 @@ As cluster admin you should create namespaces and specific service account to op
 kubectl apply -f setup.yaml
 ```
 
+Gitlab CI/CD needs gitlab-daedalus-project-docs-deployer:
+```
+kubectl -n daedalus-project-docs describe secrets $(kubectl -n daedalus-project-docs get secret | grep gitlab-daedalus-project-docs-deployer | awk  '{print $1}') | grep token: | awk  '{print $2}'
+```
+
 Three namespaces will be created:
 
 * daedalus-project-docs-develop
 * daedalus-project-docs-staging
 * daedalus-project-docs
 
-Service account *gitlab-daedalus-project-deployer* is able to create and update resources in all these namespaces.
+Service account *gitlab-daedalus-project-docs-deployer* is able to create and update resources in all these namespaces.
 
 ## Environments
 

@@ -56,13 +56,13 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs
 rules:
 - apiGroups: ["", "extensions", "apps"]
@@ -72,21 +72,21 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs
 subjects:
 - kind: ServiceAccount
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs-develop
 rules:
 - apiGroups: ["", "extensions", "apps"]
@@ -96,21 +96,21 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs-develop
 subjects:
 - kind: ServiceAccount
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs-staging
 rules:
 - apiGroups: ["", "extensions", "apps"]
@@ -120,13 +120,13 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs-staging
 subjects:
 - kind: ServiceAccount
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
   namespace: daedalus-project-docs
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: gitlab-daedalus-project-deployer
+  name: gitlab-daedalus-project-docs-deployer
