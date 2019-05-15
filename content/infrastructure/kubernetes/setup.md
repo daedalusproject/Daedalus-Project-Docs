@@ -66,6 +66,24 @@ kubectl label node minion02.k8s.windmaker.net node-role.kubernetes.io/worker=wor
 kubectl label node minion03.k8s.windmaker.net node-role.kubernetes.io/worker=worker
 ```
 
+### Configure CoreDNS proxy
+
+Make CoreDNS proxy public request over /etc/hosts:
+
+```
+kubectl edit cm coredns -n kube-system
+```
+
+Place the following line:
+```
+proxy . /etc/resolv.conf
+```
+
+Restart CoreDNS:
+```
+kubectl get pods -n kube-system -oname |grep coredns |xargs kubectl delete -n kube-system
+```
+
 ### Install MetalLB
 
 Create namespace:
@@ -165,6 +183,18 @@ spec:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 ```
+
+#### Modify externalTrafficPolicy
+
+Edit service:
+
+```
+kubectl -n ingress-nginx edit svc ingress-nginx
+```
+
+Set `externalTrafficPolicy` to `Local`
+
+
 
 Install Krew plugin.
 ```

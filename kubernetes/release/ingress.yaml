@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
  rules:
- - host: dev-docs.daedalus-project.io
+ - host: docs.daedalus-project.io
    http:
      paths:
      - path: /
