@@ -7,7 +7,7 @@ COPY vhostlocations.conf /etc/nginx/vhostlocations.conf
 COPY realip.conf /etc/nginx/realip.conf
 COPY --chown=www-data:www-data public /var/www/daedalus-project-docs
 
-# forward request and error logs to docker log collector
+# Forward request and error logs to docker log collector
 RUN chown -R www-data:www-data /var/lib/nginx \
     && mkdir -p /var/run/nginx \
     && chown www-data:www-data /var/run/nginx \
@@ -16,7 +16,7 @@ RUN chown -R www-data:www-data /var/lib/nginx \
 
 USER www-data
 
-EXPOSE 80
+EXPOSE 8080
 
 STOPSIGNAL SIGTERM
 
