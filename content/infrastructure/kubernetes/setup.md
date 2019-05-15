@@ -184,6 +184,18 @@ spec:
     app.kubernetes.io/part-of: ingress-nginx
 ```
 
+#### Modify externalTrafficPolicy
+
+Edit service:
+
+```
+kubectl -n ingress-nginx edit svc ingress-nginx
+```
+
+Set `externalTrafficPolicy` to `Local`
+
+
+
 Install Krew plugin.
 ```
 kubectl krew install ingress-nginx
