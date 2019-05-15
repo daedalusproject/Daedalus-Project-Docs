@@ -8,7 +8,7 @@ metadata:
     role: project-docs-develop
 spec:
   ports:
-  - port: 8080
+  - port: 80
     targetPort: 8080
   selector:
     app: nginx
