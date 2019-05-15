@@ -14,7 +14,7 @@ spec:
      - path: /
        backend:
          serviceName: daedalus-project-docs-staging
-         servicePort: 80
+         servicePort: 8080
 
  tls:
  - hosts:

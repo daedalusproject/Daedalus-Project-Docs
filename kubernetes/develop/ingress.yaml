@@ -15,7 +15,7 @@ spec:
      - path: /
        backend:
          serviceName: daedalus-project-docs-develop
-         servicePort: 80
+         servicePort: 8080
  tls:
  - hosts:
    - dev-docs.daedalus-project.io
