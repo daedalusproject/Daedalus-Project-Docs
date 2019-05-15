@@ -11,6 +11,8 @@ COPY --chown=www-data:www-data public /var/www/daedalus-project-docs
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
+USER www-data
+
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
