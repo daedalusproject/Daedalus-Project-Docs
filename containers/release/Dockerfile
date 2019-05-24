@@ -1,4 +1,4 @@
-FROM daedalusproject/base_nginx_daedalus_light:201904300501
+FROM daedalusproject/base_nginx_daedalus_light:201905230353
 MAINTAINER Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>
 
 COPY containers/release/nginx/vhost /etc/nginx/sites-enabled/default
@@ -12,7 +12,7 @@ RUN chown -R www-data:www-data /var/lib/nginx \
     && mkdir -p /var/run/nginx \
     && chown www-data:www-data /var/run/nginx \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
+    && ln -sf /dev/stderr /var/log/nginx/error.log
 
 USER www-data
 
