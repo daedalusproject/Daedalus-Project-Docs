@@ -52,7 +52,6 @@ create_nightly_image:
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
-        - ls -lahrt public
         - DATESTRING=$(cat timestamp/timestampfile)
         - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
