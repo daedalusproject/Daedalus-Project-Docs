@@ -172,6 +172,7 @@ create_release_image:
     script:
         - IMAGENAME=daedalus-project-docs
         - RELEASEDATE=$(date)
+        - ls -lahrt public
         - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/release/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
