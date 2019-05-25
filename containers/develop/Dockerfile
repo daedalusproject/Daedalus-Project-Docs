@@ -16,7 +16,7 @@ RUN chown -R www-data:www-data /var/lib/nginx \
 
 USER www-data
 
-EXPOSE 8080
+EXPOSE 80
 
 STOPSIGNAL SIGTERM
 
