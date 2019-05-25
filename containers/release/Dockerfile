@@ -8,15 +8,10 @@ COPY realip.conf /etc/nginx/realip.conf
 COPY --chown=www-data:www-data public /var/www/daedalus-project-docs
 
 # Forward request and error logs to docker log collector
-RUN chown -R www-data:www-data /var/lib/nginx \
-    && mkdir -p /var/run/nginx \
-    && chown www-data:www-data /var/run/nginx \
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
-USER www-data
-
-EXPOSE 8080
+EXPOSE 80
 
 STOPSIGNAL SIGTERM
 
