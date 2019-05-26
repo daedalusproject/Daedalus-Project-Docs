@@ -14,9 +14,7 @@ RUN chown -R www-data:www-data /var/lib/nginx \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
-USER www-data
-
-EXPOSE 8080
+EXPOSE 80
 
 STOPSIGNAL SIGTERM
 
