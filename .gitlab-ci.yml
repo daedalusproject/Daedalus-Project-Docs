@@ -11,7 +11,6 @@ init_submodules:
     script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
-        - git submodule update --remote --merge
 
 build_docs:
     stage: build
@@ -22,6 +21,7 @@ build_docs:
         - echo $DATESTRING > timestamp/timestampfile
     script:
         - hugo --gc --minify -s .
+        - test -f public/index.html
     artifacts:
         paths:
         - public
