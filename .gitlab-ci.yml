@@ -12,6 +12,10 @@ init_submodules:
         - git submodule sync --recursive
         - git submodule update --init --recursive
         - git submodule update --remote --merge
+    artifacts:
+        paths:
+        - themes
+        expire_in: 5 minutes
 
 build_docs:
     stage: build
@@ -28,6 +32,9 @@ build_docs:
         - public
         - timestamp
         expire_in: 5 minutes
+    dependencies:
+    - init_submodules
+
 
 configure_nginx:
     stage: nginx_conf
