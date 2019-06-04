@@ -9,7 +9,7 @@ COPY realip.conf /etc/nginx/realip.conf
 COPY --chown=www-data:www-data public /var/www/daedalus-project-docs
 
 # Forward request and error logs to docker log collector
-RUN update -qq \
+RUN apt update -qq \
     && apt-get install -qq -o=Dpkg::Use-Pty=0 -y cron \
     && chown -R www-data:www-data /var/lib/nginx \
     && mkdir -p /var/run/nginx \
