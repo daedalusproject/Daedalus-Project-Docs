@@ -20,4 +20,4 @@ EXPOSE 80
 
 STOPSIGNAL SIGTERM
 
-CMD [ "service", "cron", "start", ";", "nginx", "-g", "daemon off;"]
+CMD service cron start && nginx -g 'daemon off;'
