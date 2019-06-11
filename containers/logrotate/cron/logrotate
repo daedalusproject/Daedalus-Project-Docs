@@ -1,1 +1,1 @@
-*/5 * * * * /usr/sbin/logrotate /etc/logrotate.conf
+*/5 * * * * /usr/sbin/logrotate -f /etc/logrotate.d/nginx
