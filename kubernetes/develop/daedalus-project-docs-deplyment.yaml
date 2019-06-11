@@ -41,3 +41,14 @@ spec:
             port: 80
           initialDelaySeconds: 10
           periodSeconds: 20
+      - name: daedalus-project-docs-logrotate
+        image: daedalusproject/daedalus-project-docs-develop-logrotate:__IMAGE_TAG__
+        resources:
+          limits:
+            cpu: 20m
+            memory: 20Mi
+          requests:
+            cpu: 20m
+            memory: 20Mi
+        securityContext:
+          allowPrivilegeEscalation: false

@@ -1,0 +1,11 @@
+FROM daedalusproject/base_logrotate
+MAINTAINER Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>
+
+COPY containers/logrotate/conf/nginx /etc/logrotate.d/nginx
+COPY containers/logrotate/cron/logrotate /etc/crond.d/logrotate
+
+RUN rm /etc/cron.daily/logrotate
+
+STOPSIGNAL SIGTERM
+
+CMD ["/usr/sbin/cron", "-f"]
