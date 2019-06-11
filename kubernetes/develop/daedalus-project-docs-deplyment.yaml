@@ -17,6 +17,7 @@ spec:
         app: nginx
         role: project-docs-develop
     spec:
+      shareProcessNamespace: true
       containers:
       - name: daedalus-project-docs-nginx
         image: daedalusproject/daedalus-project-docs-develop:__IMAGE_TAG__
