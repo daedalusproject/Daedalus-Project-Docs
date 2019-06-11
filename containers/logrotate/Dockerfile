@@ -11,4 +11,4 @@ RUN rm /etc/cron.daily/logrotate \
 
 STOPSIGNAL SIGTERM
 
-CMD cron && tail -f /var/log/cron.log
+CMD tail -f /var/log/cron.log
