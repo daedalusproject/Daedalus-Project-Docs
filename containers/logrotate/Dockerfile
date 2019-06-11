@@ -2,7 +2,7 @@ FROM daedalusproject/base_logrotate
 MAINTAINER Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>
 
 COPY containers/logrotate/conf/nginx /etc/logrotate.d/nginx
-COPY containers/logrotate/cron/logrotate /etc/crond.d/logrotate
+COPY containers/logrotate/cron/logrotate /etc/cron.d/logrotate
 
 RUN rm /etc/cron.daily/logrotate
 
