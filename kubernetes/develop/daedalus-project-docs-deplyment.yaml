@@ -17,10 +17,16 @@ spec:
         app: nginx
         role: project-docs-develop
     spec:
+      volumes:
+      - name: nginx-logs
+        emptyDir: {}
       shareProcessNamespace: true
       containers:
       - name: daedalus-project-docs-nginx
         image: daedalusproject/daedalus-project-docs-develop:__IMAGE_TAG__
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
         resources:
           limits:
             cpu: 20m
@@ -44,6 +50,9 @@ spec:
           periodSeconds: 20
       - name: daedalus-project-docs-logrotate
         image: daedalusproject/daedalus-project-docs-develop-logrotate:__IMAGE_TAG__
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
         resources:
           limits:
             cpu: 20m
