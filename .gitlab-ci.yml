@@ -54,14 +54,14 @@ configure_nginx:
     dependencies:
     - build_docs
 
-create_nightly_image:
+create_nightly_nginx_image:
     stage: docker_image
     image: daedalusproject/base_docker:201906021138
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
         - DATESTRING=$(cat timestamp/timestampfile)
-        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/nginx/develop/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
         - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":nightly
@@ -81,15 +81,41 @@ create_nightly_image:
     - /^master$/
     - tags
 
-
-create_develop_image:
+create_develop_nginx_image:
     stage: docker_image
     image: daedalusproject/base_docker:201906021138
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
         - DATESTRING=$(cat timestamp/timestampfile)
-        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/develop/Dockerfile .
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/nginx/develop/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${DATESTRING}"
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker push daedalusproject/"${IMAGENAME}":"${DATESTRING}"
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - configure_nginx
+    only:
+    - /^develop$/
+
+create_develop_logrotate_image:
+    stage: docker_image
+    image: daedalusproject/base_docker:201906021138
+    script:
+        - IMAGENAME=daedalus-project-docs-develop-logrotate
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/nginx/logrotate/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
         - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
@@ -124,7 +150,8 @@ deploy_develop_image:
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
         - kubectl apply -f kubernetes/develop/ingress.yaml
     dependencies:
-    - create_develop_image
+    - create_develop_nginx_image
+    - create_develop_logrotate_image
     only:
     - /^develop$/
 
@@ -136,7 +163,7 @@ create_staging_image:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
         - DATESTRING=$(cat timestamp/timestampfile)
-        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/release/Dockerfile .
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/nginx/release/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
         - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
@@ -180,7 +207,7 @@ create_release_image:
     script:
         - IMAGENAME=daedalus-project-docs
         - RELEASEDATE=$(date)
-        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/release/Dockerfile .
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/nginx/release/Dockerfile .
         - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
         - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
         - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"
