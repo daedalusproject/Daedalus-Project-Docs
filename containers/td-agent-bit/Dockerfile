@@ -5,5 +5,4 @@ COPY containers/td-agent-bit/conf/td-agent-bit.conf /etc/td-agent-bit/td-agent-b
 
 STOPSIGNAL SIGTERM
 
-#CMD "/usr/bin/td-agent-bit -e /usr/lib/out_s3.so -c /etc/td-agent-bit/td-agent-bit.conf"
-CMD "tail -f /var/log/lastlog"
+CMD ["/usr/bin/td-agent-bit", "-e", "/usr/lib/out_s3.so", "-c", "/etc/td-agent-bit/td-agent-bit.conf"]
