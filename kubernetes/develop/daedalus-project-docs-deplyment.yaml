@@ -69,5 +69,17 @@ spec:
           requests:
             cpu: 20m
             memory: 20Mi
+      - name: daedalus-project-docs-td-agent-bit
+        image: daedalusproject/daedalus-project-docs-develop-td-agent-bit:__IMAGE_TAG__
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+        resources:
+          limits:
+            cpu: 20m
+            memory: 20Mi
+          requests:
+            cpu: 20m
+            memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false

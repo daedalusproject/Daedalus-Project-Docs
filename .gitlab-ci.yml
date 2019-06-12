@@ -135,6 +135,33 @@ create_develop_logrotate_image:
     only:
     - /^develop$/
 
+create_develop_td-agent-bit_image:
+    stage: docker_image
+    image: daedalusproject/base_docker:201906021138
+    script:
+        - IMAGENAME=daedalus-project-docs-develop-td-agent-bit
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/td-agent-bit/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${DATESTRING}"
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker push daedalusproject/"${IMAGENAME}":"${DATESTRING}"
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - configure_nginx
+    only:
+    - /^develop$/
+
 deploy_develop_image:
     stage: deploy
     image: daedalusproject/base_kubectl:201906021138
