@@ -81,6 +81,60 @@ create_nightly_nginx_image:
     - /^master$/
     - tags
 
+create_nightly_logrotate_image:
+    stage: docker_image
+    image: daedalusproject/base_docker:201906021138
+    script:
+        - IMAGENAME=daedalus-project-docs-develop-logrotate
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/logrotate/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":nightly
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":nightly
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - configure_nginx
+    except:
+    - /^develop$/
+    - /^master$/
+    - tags
+
+create_nightly_td-agent-bit_image:
+    stage: docker_image
+    image: daedalusproject/base_docker:201906021138
+    script:
+        - IMAGENAME=daedalus-project-docs-develop-logrotate
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/td-agent-bit/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":nightly
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":nightly
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - configure_nginx
+    except:
+    - /^develop$/
+    - /^master$/
+    - tags
+
 create_develop_nginx_image:
     stage: docker_image
     image: daedalusproject/base_docker:201906021138
