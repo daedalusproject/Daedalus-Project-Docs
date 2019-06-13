@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: daedalus-project-docs-develop
+  name: daedalus-project-docs-develop-logcollector
+  labels:
+    app: daedalus-project-docs-develop-logcollector
+spec:
+  selector:
+    matchLabels:
+      app: tdagent
+      role: logcollector
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tdagent
+        role: logcollector
+    spec:
+      containers:
+      - name: logcollector
+        image: daedalusproject/base_td_agent
+        resources:
+          limits:
+            cpu: 20m
+            memory: 20Mi
+          requests:
+            cpu: 20m
+            memory: 20Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+        ports:
+        - containerPort: 9880
+        readinessProbe:
+          tcpSocket:
+            port: 9880
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 9880
+          initialDelaySeconds: 10
+          periodSeconds: 20
