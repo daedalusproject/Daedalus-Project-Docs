@@ -282,7 +282,9 @@ deploy_develop_image:
         - echo $DATESTRING
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/develop/logrecollector-deplyment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
+        - kubectl apply -f kubernetes/develop/logrecollector-service.yaml
         - kubectl apply -f kubernetes/develop/ingress.yaml
     dependencies:
     - create_develop_nginx_image
