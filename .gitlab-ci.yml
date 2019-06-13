@@ -281,7 +281,7 @@ deploy_develop_image:
         - DATESTRING=$(cat timestamp/timestampfile)
         - echo $DATESTRING
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deployment.yaml
-        - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/logrecollector-deployment.yaml
+        - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/logcollector-deployment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-deployment.yaml
         - kubectl apply -f kubernetes/develop/logcollector-deployment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
