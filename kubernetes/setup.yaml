@@ -47,11 +47,11 @@ metadata:
   namespace: daedalus-project-docs-develop
 spec:
   hard:
-    requests.cpu: "140m"
-    requests.memory: 140Mi
-    limits.cpu: "140m"
-    limits.memory: 140Mi
-    pods: "2"
+    requests.cpu: "160m"
+    requests.memory: 160Mi
+    limits.cpu: "160m"
+    limits.memory: 160Mi
+    pods: "4"
 ---
 apiVersion: v1
 kind: ServiceAccount
