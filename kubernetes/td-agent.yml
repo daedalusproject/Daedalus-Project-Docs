@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: logcollector
-        image: daedalusproject/base_td_agent
+        image: daedalusproject/daedalus-project-docs-develop-logcollector
         resources:
           limits:
             cpu: 20m
