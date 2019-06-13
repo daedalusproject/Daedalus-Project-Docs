@@ -31,13 +31,3 @@ spec:
           allowPrivilegeEscalation: false
         ports:
         - containerPort: 9880
-        readinessProbe:
-          tcpSocket:
-            port: 9880
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          tcpSocket:
-            port: 9880
-          initialDelaySeconds: 10
-          periodSeconds: 20
