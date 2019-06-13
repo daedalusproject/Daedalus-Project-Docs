@@ -280,9 +280,9 @@ deploy_develop_image:
         - kubectl config use-context default
         - DATESTRING=$(cat timestamp/timestampfile)
         - echo $DATESTRING
-        - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deplyment.yaml
+        - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deployment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-deplyment.yaml
-        - kubectl apply -f kubernetes/develop/logrecollector-deplyment.yaml
+        - kubectl apply -f kubernetes/develop/logrecollector-deployment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
         - kubectl apply -f kubernetes/develop/logrecollector-service.yaml
         - kubectl apply -f kubernetes/develop/ingress.yaml
