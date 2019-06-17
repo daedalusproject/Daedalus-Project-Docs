@@ -3,5 +3,4 @@ MAINTAINER Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>
 
 COPY containers/logcollector/conf/td-agent.conf /etc/td-agent/td-agent.conf
 
-#CMD ["/opt/td-agent/embedded/bin/fluentd", "--log", "/var/log/td-agent/td-agent.log"]
-CMD ["tail", "-f", "/var/log/lastlog"]
+CMD ["/opt/td-agent/embedded/bin/fluentd"]
