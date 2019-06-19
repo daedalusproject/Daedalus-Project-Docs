@@ -7,7 +7,7 @@ stages:
 
 init_submodules:
     stage: submodules
-    image: daedalusproject/base_git
+    image: daedalusproject/base_git:201906071349
     script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
