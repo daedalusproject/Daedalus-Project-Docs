@@ -31,3 +31,11 @@ spec:
           allowPrivilegeEscalation: false
         ports:
         - containerPort: 9880
+        volumeMounts:
+        - name: logcollector-config
+          mountPath: /etc/td-agent/td-agent.conf
+          readOnly: true
+      volumes:
+      - name: logcollector-config
+        secret:
+          secretName: logcollector-config
