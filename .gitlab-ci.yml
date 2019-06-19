@@ -287,7 +287,7 @@ deploy_develop_image:
         - sed -i s/_@_ELASTICSEARCH_USER_@_/$ELASTICSEARCH_DEVELOP_USER/g kubernetes/develop/logcollector.conf
         - sed -i s/_@_ELASTICSEARCH_PASSWORD_@_/$ELASTICSEARCH_DEVELOP_PASSWORD/g kubernetes/develop/logcollector.conf
         - sed -i s/_@_ELASTICSEARCH_INDEX_@_/$ELASTICSEARCH_DEVELOP_INDEX/g kubernetes/develop/logcollector.conf
-        - kubectl -n daedalus-project-docs-develop create secret logcollector-config --from-file kubernetes/develop/logcollector.conf
+        - kubectl -n daedalus-project-docs-develop create secret generic logcollector-config --from-file kubernetes/develop/logcollector.conf
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-deployment.yaml
         - kubectl apply -f kubernetes/develop/logcollector-deployment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
