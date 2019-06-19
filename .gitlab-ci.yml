@@ -278,10 +278,16 @@ deploy_develop_image:
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
         - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
         - kubectl config use-context default
+        - kubectl -n daedalus-project-docs-develop delete secret logcollector-config --ignore-not-found=true
         - DATESTRING=$(cat timestamp/timestampfile)
         - echo $DATESTRING
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deployment.yaml
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/logcollector-deployment.yaml
+        - sed -i s/_@_ELASTICSEARCH_HOST_@_/$ELASTICSEARCH_DEVELOP_HOST/g kubernetes/develop/logcollector.conf
+        - sed -i s/_@_ELASTICSEARCH_USER_@_/$ELASTICSEARCH_DEVELOP_USER/g kubernetes/develop/logcollector.conf
+        - sed -i s/_@_ELASTICSEARCH_PASSWORD_@_/$ELASTICSEARCH_DEVELOP_PASSWORD/g kubernetes/develop/logcollector.conf
+        - sed -i s/_@_ELASTICSEARCH_INDEX_@_/$ELASTICSEARCH_DEVELOP_INDEX/g kubernetes/develop/logcollector.conf
+        - kubectl -n daedalus-project-docs-develop create secret logcollector-config --from-file kubernetes/develop/logcollector.conf
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-deployment.yaml
         - kubectl apply -f kubernetes/develop/logcollector-deployment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
