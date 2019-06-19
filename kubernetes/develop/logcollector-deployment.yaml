@@ -33,7 +33,7 @@ spec:
         - containerPort: 9880
         volumeMounts:
         - name: logcollector-config
-          mountPath: /etc/td-agent/td-agent.conf
+          mountPath: /etc/td-agent/
           readOnly: true
       volumes:
       - name: logcollector-config
