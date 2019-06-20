@@ -7,7 +7,7 @@ stages:
 
 init_submodules:
     stage: submodules
-    image: daedalusproject/base_git:201906071349
+    image: daedalusproject/base_git:201906201803
     script:
         - git submodule sync --recursive
         - git submodule update --init --recursive
@@ -19,7 +19,7 @@ init_submodules:
 
 build_docs:
     stage: build
-    image: daedalusproject/base_hugo:201906171703
+    image: daedalusproject/base_hugo:201906201803
     before_script:
         - mkdir timestamp
         - DATESTRING=$(date +%Y%m%d%H%M)
@@ -38,7 +38,7 @@ build_docs:
 
 configure_nginx:
     stage: nginx_conf
-    image: daedalusproject/base_xml_utils:201906171703
+    image: daedalusproject/base_xml_utils:201906201803
     script:
         - utils/xml2preloadlinks.sh public/sitemap.xml
         - echo "set_real_ip_from  ${KUBE_NETWORK};" > realip.conf
@@ -56,7 +56,7 @@ configure_nginx:
 
 create_nightly_nginx_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
@@ -83,7 +83,7 @@ create_nightly_nginx_image:
 
 create_nightly_logrotate_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop-logrotate
         - RELEASEDATE=$(date)
@@ -110,7 +110,7 @@ create_nightly_logrotate_image:
 
 create_nightly_td-agent-bit_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop-logrotate
         - RELEASEDATE=$(date)
@@ -137,7 +137,7 @@ create_nightly_td-agent-bit_image:
 
 create_nightly_logcollector_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop-logcollector
         - RELEASEDATE=$(date)
@@ -164,7 +164,7 @@ create_nightly_logcollector_image:
 
 create_develop_nginx_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop
         - RELEASEDATE=$(date)
@@ -191,7 +191,7 @@ create_develop_nginx_image:
 
 create_develop_logrotate_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop-logrotate
         - RELEASEDATE=$(date)
@@ -218,7 +218,7 @@ create_develop_logrotate_image:
 
 create_develop_td-agent-bit_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop-td-agent-bit
         - RELEASEDATE=$(date)
@@ -245,7 +245,7 @@ create_develop_td-agent-bit_image:
 
 create_develop_logcollector_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs-develop-logcollector
         - RELEASEDATE=$(date)
@@ -272,7 +272,7 @@ create_develop_logcollector_image:
 
 deploy_develop_image:
     stage: deploy
-    image: daedalusproject/base_kubectl:201906171703
+    image: daedalusproject/base_kubectl:201906201803
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
@@ -301,7 +301,7 @@ deploy_develop_image:
 
 create_staging_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
 
     script:
         - IMAGENAME=daedalus-project-docs-develop
@@ -329,7 +329,7 @@ create_staging_image:
 
 deploy_staging_image:
     stage: deploy
-    image: daedalusproject/base_kubectl:201906171703
+    image: daedalusproject/base_kubectl:201906201803
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
@@ -347,7 +347,7 @@ deploy_staging_image:
 
 create_release_image:
     stage: docker_image
-    image: daedalusproject/base_docker:201906171703
+    image: daedalusproject/base_docker:201906201803
     script:
         - IMAGENAME=daedalus-project-docs
         - RELEASEDATE=$(date)
@@ -373,7 +373,7 @@ create_release_image:
 
 deploy_release_image:
     stage: deploy
-    image: daedalusproject/base_kubectl:201906171703
+    image: daedalusproject/base_kubectl:201906201803
     script:
         - kubectl config set-cluster default --server=$KUBE_URL --certificate-authority=kubernetes/windmaker.pem
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN

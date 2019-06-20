@@ -1,4 +1,4 @@
-FROM daedalusproject/base_logrotate:201906171703
+FROM daedalusproject/base_logrotate:201906201803
 MAINTAINER Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>
 
 COPY containers/logrotate/conf/nginx /etc/logrotate.d/nginx
