@@ -22,11 +22,11 @@ spec:
         image: daedalusproject/daedalus-project-docs-develop-logcollector:__IMAGE_TAG__
         resources:
           limits:
-            cpu: 40m
-            memory: 60Mi
+            cpu: 80m
+            memory: 120Mi
           requests:
-            cpu: 40m
-            memory: 60Mi
+            cpu: 80m
+            memory: 120Mi
         securityContext:
           allowPrivilegeEscalation: false
         ports:
