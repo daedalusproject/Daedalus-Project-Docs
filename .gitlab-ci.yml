@@ -284,7 +284,7 @@ deploy_develop_image:
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deployment.yaml
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/logcollector-deployment.yaml
         - sed -i s/_@_ELASTICSEARCH_HOST_@_/"${ELASTICSEARCH_DEVELOP_HOST}"/g kubernetes/develop/td-agent.conf
-        - sed -i s/_@_ELASTICSEARCH_USER_@_/"${ELASTICSEARCH_DEVELOP_USER}/g kubernetes/develop/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_USER_@_/"${ELASTICSEARCH_DEVELOP_USER}"/g kubernetes/develop/td-agent.conf
         - sed -i s/_@_ELASTICSEARCH_PASSWORD_@_/"{$ELASTICSEARCH_DEVELOP_PASSWORD}"/g kubernetes/develop/td-agent.conf
         - sed -i s/_@_ELASTICSEARCH_INDEX_@_/"${ELASTICSEARCH_DEVELOP_INDEX}"/g kubernetes/develop/td-agent.conf
         - sed -i s/_@_AWS_KEY_ID_@_/"${AWS_KEY_ID}"/g kubernetes/develop/td-agent.conf
