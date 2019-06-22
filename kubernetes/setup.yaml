@@ -51,7 +51,7 @@ spec:
     requests.memory: 360Mi
     limits.cpu: "360m"
     limits.memory: 360Mi
-    pods: "5"
+    pods: "7"
 ---
 apiVersion: v1
 kind: ServiceAccount
