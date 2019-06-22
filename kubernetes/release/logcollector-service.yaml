@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: daedalus-project-docs-staging
+  name: logcollector
+  labels:
+    app: tdagent
+    role: logcollector
+spec:
+  ports:
+  - port: 9880
+    targetPort: 9880
+  selector:
+    app: tdagent
+    role: logcollector

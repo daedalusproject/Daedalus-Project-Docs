@@ -278,7 +278,7 @@ deploy_develop_image:
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
         - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
         - kubectl config use-context default
-        - kubectl -n daedalus-project-docs-develop delete secret logcollector-config --ignore-not-found=true
+        - kubectl -n daedalus-project-docs-develop delete secret logcollector-develop-config --ignore-not-found=true
         - DATESTRING=$(cat timestamp/timestampfile)
         - echo $DATESTRING
         - sed -i s/__IMAGE_TAG__/$DATESTRING/g kubernetes/develop/daedalus-project-docs-deployment.yaml
@@ -290,7 +290,7 @@ deploy_develop_image:
         - sed -i s/_@_AWS_KEY_ID_@_/"${AWS_KEY_ID}"/g kubernetes/develop/td-agent.conf
         - sed -i s/_@_AWS_SECRET_KEY_@_/"${AWS_SECRET_KEY}"/g kubernetes/develop/td-agent.conf
         - sed -i s/_@_S3_BUCKET_NAME_@_/"${S3_BUCKET_NAME}"/g kubernetes/develop/td-agent.conf
-        - kubectl -n daedalus-project-docs-develop create secret generic logcollector-config --from-file kubernetes/develop/td-agent.conf
+        - kubectl -n daedalus-project-docs-develop create secret generic logcollector-develop-config --from-file kubernetes/develop/td-agent.conf
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-deployment.yaml
         - kubectl apply -f kubernetes/develop/logcollector-deployment.yaml
         - kubectl apply -f kubernetes/develop/daedalus-project-docs-service.yaml
@@ -302,7 +302,7 @@ deploy_develop_image:
     only:
     - /^develop$/
 
-create_staging_image:
+create_staging_nginx_image:
     stage: docker_image
     image: daedalusproject/base_docker:201906201803
 
@@ -330,6 +330,88 @@ create_staging_image:
     only:
     - /^master$/
 
+create_staging_logrotate_image:
+    stage: docker_image
+    image: daedalusproject/base_docker:201906201803
+    script:
+        - IMAGENAME=daedalus-project-docs-develop-logrotate
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/logrotate/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker push daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - configure_nginx
+    only:
+    - /^master$/
+
+create_staging_td-agent-bit_image:
+    stage: docker_image
+    image: daedalusproject/base_docker:201906201803
+    script:
+        - IMAGENAME=daedalus-project-docs-develop-td-agent-bit
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/td-agent-bit/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker push daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - configure_nginx
+    only:
+    - /^master$/
+
+create_staging_logcollector_image:
+    stage: docker_image
+    image: daedalusproject/base_docker:201906201803
+    script:
+        - IMAGENAME=daedalus-project-docs-develop-logcollector
+        - RELEASEDATE=$(date)
+        - DATESTRING=$(cat timestamp/timestampfile)
+        - docker build --network=host --no-cache -t "${IMAGENAME}" -f containers/logcollector/Dockerfile .
+        - docker login --username "${DOCKERHUBUSER}" --password "${DOCKERHUBPASSWORD}"
+        - docker create --name="${IMAGENAME}" -i "${IMAGENAME}"
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":latest
+        - docker tag "${IMAGENAME}" daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker commit -m "$RELEASEDATE" -a "Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>" "${IMAGENAME}" daedalusproject/"${IMAGENAME}"
+        - docker push daedalusproject/"${IMAGENAME}":latest
+        - docker push daedalusproject/"${IMAGENAME}":"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"
+        - docker stop "${IMAGENAME}"
+        - docker rm "${IMAGENAME}"
+        - docker rmi "${IMAGENAME}"
+    artifacts:
+        paths:
+        - timestamp
+        expire_in: 5 minutes
+    dependencies:
+    - configure_nginx
+    only:
+    - /^develop$/
+
+
 deploy_staging_image:
     stage: deploy
     image: daedalusproject/base_kubectl:201906201803
@@ -338,9 +420,21 @@ deploy_staging_image:
         - kubectl config set-credentials gitlab-daedalus-project-deployer --token=$KUBE_USER_TOKEN
         - kubectl config set-context default --cluster=default --user=gitlab-daedalus-project-deployer
         - kubectl config use-context default
+        - kubectl -n daedalus-project-docs-staging delete secret logcollector-staging-config --ignore-not-found=true
         - DATESTRING=$(cat timestamp/timestampfile)
         - sed -i s/__IMAGE_TAG__/"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"/g kubernetes/staging/daedalus-project-docs-deplyment.yaml
+        - sed -i s/__IMAGE_TAG__/"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"/g kubernetes/staging/logcollector-deployment.yaml
+        - sed -i s/_@_ELASTICSEARCH_HOST_@_/"${ELASTICSEARCH_DEVELOP_HOST}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_USER_@_/"${ELASTICSEARCH_DEVELOP_USER}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_PASSWORD_@_/"${ELASTICSEARCH_DEVELOP_PASSWORD}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_INDEX_@_/"${ELASTICSEARCH_DEVELOP_INDEX}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_AWS_KEY_ID_@_/"${AWS_KEY_ID}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_AWS_SECRET_KEY_@_/"${AWS_SECRET_KEY}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_S3_BUCKET_NAME_@_/"${S3_BUCKET_NAME}"/g kubernetes/staging/td-agent.conf
+        - kubectl -n daedalus-project-docs-staging create secret generic logcollector-staging-config --from-file kubernetes/develop/td-agent.conf
         - kubectl apply -f kubernetes/staging/daedalus-project-docs-deplyment.yaml
+        - kubectl apply -f kubernetes/staging/logcollector-deployment.yaml
+        - kubectl apply -f kubernetes/staging/logcollector-service.yaml
         - kubectl apply -f kubernetes/staging/daedalus-project-docs-service.yaml
         - kubectl apply -f kubernetes/staging/ingress.yaml
     dependencies:
