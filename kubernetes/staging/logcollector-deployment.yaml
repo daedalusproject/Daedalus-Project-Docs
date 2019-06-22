@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: daedalus-project-docs-staging
+  name: daedalus-project-docs-staging-logcollector
+  labels:
+    app: daedalus-project-docs-staging-logcollector
+spec:
+  selector:
+    matchLabels:
+      app: tdagent
+      role: logcollector
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tdagent
+        role: logcollector
+    spec:
+      containers:
+      - name: logcollector
+        image: daedalusproject/daedalus-project-docs-develop-logcollector:__IMAGE_TAG__
+        resources:
+          limits:
+            cpu: 80m
+            memory: 120Mi
+          requests:
+            cpu: 80m
+            memory: 120Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+        ports:
+        - containerPort: 9880
+        volumeMounts:
+        - name: logcollector-config
+          mountPath: /etc/td-agent/
+          readOnly: true
+      volumes:
+      - name: logcollector-config
+        secret:
+          secretName: logcollector-staging-config
