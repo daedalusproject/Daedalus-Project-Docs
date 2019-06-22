@@ -17,9 +17,16 @@ spec:
         app: nginx
         role: project-docs-staging
     spec:
+      volumes:
+      - name: nginx-logs
+        emptyDir: {}
+      shareProcessNamespace: true
       containers:
       - name: daedalus-project-docs-nginx
         image: daedalusproject/daedalus-project-docs-develop:__IMAGE_TAG__
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
         resources:
           limits:
             cpu: 20m
@@ -41,3 +48,38 @@ spec:
             port: 80
           initialDelaySeconds: 10
           periodSeconds: 20
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - >
+                  /bin/chmod 755 /var/log/nginx;
+                  /bin/chown root:adm /var/log/nginx;
+      - name: daedalus-project-docs-logrotate
+        image: daedalusproject/daedalus-project-docs-develop-logrotate:__IMAGE_TAG__
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+        resources:
+          limits:
+            cpu: 20m
+            memory: 20Mi
+          requests:
+            cpu: 20m
+            memory: 20Mi
+      - name: daedalus-project-docs-td-agent-bit
+        image: daedalusproject/daedalus-project-docs-develop-td-agent-bit:__IMAGE_TAG__
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+        resources:
+          limits:
+            cpu: 20m
+            memory: 20Mi
+          requests:
+            cpu: 20m
+            memory: 20Mi
+        securityContext:
+          allowPrivilegeEscalation: false
