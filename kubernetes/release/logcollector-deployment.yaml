@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: daedalus-project-docs-staging
-  name: daedalus-project-docs-staging-logcollector
+  namespace: daedalus-project-docs
+  name: daedalus-project-docs-logcollector
   labels:
-    app: daedalus-project-docs-staging-logcollector
+    app: daedalus-project-docs-logcollector
 spec:
   selector:
     matchLabels:
@@ -38,4 +38,4 @@ spec:
       volumes:
       - name: logcollector-config
         secret:
-          secretName: logcollector-develop-config
+          secretName: logcollector-config
