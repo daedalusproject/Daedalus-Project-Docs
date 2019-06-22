@@ -430,7 +430,7 @@ deploy_staging_image:
         - sed -i s/_@_AWS_KEY_ID_@_/"${AWS_KEY_ID}"/g kubernetes/staging/td-agent.conf
         - sed -i s/_@_AWS_SECRET_KEY_@_/"${AWS_SECRET_KEY}"/g kubernetes/staging/td-agent.conf
         - sed -i s/_@_S3_BUCKET_NAME_@_/"${S3_BUCKET_NAME}"/g kubernetes/staging/td-agent.conf
-        - kubectl -n daedalus-project-docs-staging create secret generic logcollector-staging-config --from-file kubernetes/develop/td-agent.conf
+        - kubectl -n daedalus-project-docs-staging create secret generic logcollector-staging-config --from-file kubernetes/staging/td-agent.conf
         - kubectl apply -f kubernetes/staging/daedalus-project-docs-deplyment.yaml
         - kubectl apply -f kubernetes/staging/logcollector-deployment.yaml
         - kubectl apply -f kubernetes/staging/logcollector-service.yaml
