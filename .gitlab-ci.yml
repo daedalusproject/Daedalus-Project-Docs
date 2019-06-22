@@ -423,10 +423,10 @@ deploy_staging_image:
         - DATESTRING=$(cat timestamp/timestampfile)
         - sed -i s/__IMAGE_TAG__/"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"/g kubernetes/staging/daedalus-project-docs-deplyment.yaml
         - sed -i s/__IMAGE_TAG__/"${CI_COMMIT_REF_NAME}"-"${DATESTRING}"/g kubernetes/staging/logcollector-deployment.yaml
-        - sed -i s/_@_ELASTICSEARCH_HOST_@_/"${ELASTICSEARCH_DEVELOP_HOST}"/g kubernetes/staging/td-agent.conf
-        - sed -i s/_@_ELASTICSEARCH_USER_@_/"${ELASTICSEARCH_DEVELOP_USER}"/g kubernetes/staging/td-agent.conf
-        - sed -i s/_@_ELASTICSEARCH_PASSWORD_@_/"${ELASTICSEARCH_DEVELOP_PASSWORD}"/g kubernetes/staging/td-agent.conf
-        - sed -i s/_@_ELASTICSEARCH_INDEX_@_/"${ELASTICSEARCH_DEVELOP_INDEX}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_HOST_@_/"${ELASTICSEARCH_STAGING_HOST}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_USER_@_/"${ELASTICSEARCH_STAGING_USER}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_PASSWORD_@_/"${ELASTICSEARCH_STAGING_PASSWORD}"/g kubernetes/staging/td-agent.conf
+        - sed -i s/_@_ELASTICSEARCH_INDEX_@_/"${ELASTICSEARCH_STAGING_INDEX}"/g kubernetes/staging/td-agent.conf
         - sed -i s/_@_AWS_KEY_ID_@_/"${AWS_KEY_ID}"/g kubernetes/staging/td-agent.conf
         - sed -i s/_@_AWS_SECRET_KEY_@_/"${AWS_SECRET_KEY}"/g kubernetes/staging/td-agent.conf
         - sed -i s/_@_S3_BUCKET_NAME_@_/"${S3_BUCKET_NAME}"/g kubernetes/staging/td-agent.conf
