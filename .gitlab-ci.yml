@@ -409,7 +409,7 @@ create_staging_logcollector_image:
     dependencies:
     - configure_nginx
     only:
-    - /^develop$/
+    - /^master$/
 
 deploy_staging_image:
     stage: deploy
