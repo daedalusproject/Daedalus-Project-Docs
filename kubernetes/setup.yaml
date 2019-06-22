@@ -11,11 +11,11 @@ metadata:
   namespace: daedalus-project-docs
 spec:
   hard:
-    requests.cpu: "200m"
-    requests.memory: 200Mi
-    limits.cpu: "200m"
-    limits.memory: 200Mi
-    pods: "6"
+    requests.cpu: "400m"
+    requests.memory: 400Mi
+    limits.cpu: "400m"
+    limits.memory: 400Mi
+    pods: "8"
 ---
 apiVersion: v1
 kind: Namespace
@@ -29,10 +29,10 @@ metadata:
   namespace: daedalus-project-docs-staging
 spec:
   hard:
-    requests.cpu: "100m"
-    requests.memory: 100Mi
-    limits.cpu: "100m"
-    limits.memory: 100Mi
+    requests.cpu: "260m"
+    requests.memory: 260Mi
+    limits.cpu: "260m"
+    limits.memory: 260Mi
     pods: "4"
 ---
 apiVersion: v1
@@ -47,11 +47,11 @@ metadata:
   namespace: daedalus-project-docs-develop
 spec:
   hard:
-    requests.cpu: "50m"
-    requests.memory: 50Mi
-    limits.cpu: "50m"
-    limits.memory: 50Mi
-    pods: "2"
+    requests.cpu: "260m"
+    requests.memory: 260Mi
+    limits.cpu: "260m"
+    limits.memory: 260Mi
+    pods: "4"
 ---
 apiVersion: v1
 kind: ServiceAccount

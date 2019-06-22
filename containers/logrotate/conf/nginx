@@ -1,0 +1,14 @@
+/var/log/nginx/*.log {
+    daily
+    missingok
+    rotate 5
+    size 10M
+    compress
+    delaycompress
+    notifempty
+    create 0640 www-data adm
+    sharedscripts
+    postrotate
+        kill  -USR1 $(ps -ef | grep 'nginx: master process' | awk '{print $2}' | head -1)
+    endscript
+}
