@@ -39,3 +39,4 @@ spec:
       - name: logcollector-config
         secret:
           secretName: logcollector-staging-config
+      terminationGracePeriodSeconds: 160
