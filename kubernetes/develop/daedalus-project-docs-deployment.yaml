@@ -63,7 +63,6 @@ spec:
                   - "/usr/sbin/nginx"
                   - "-s"
                   - "quit"
-        terminationGracePeriodSeconds: 60
       - name: daedalus-project-docs-logrotate
         image: daedalusproject/daedalus-project-docs-develop-logrotate:__IMAGE_TAG__
         volumeMounts:
@@ -78,7 +77,6 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
-        terminationGracePeriodSeconds: 5
       - name: daedalus-project-docs-td-agent-bit
         image: daedalusproject/daedalus-project-docs-develop-td-agent-bit:__IMAGE_TAG__
         volumeMounts:
@@ -93,4 +91,4 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
-        terminationGracePeriodSeconds: 150
+      terminationGracePeriodSeconds: 150
