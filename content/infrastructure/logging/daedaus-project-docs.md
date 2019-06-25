@@ -7,7 +7,7 @@ This section shows how logging is implemented for this wiki.
 
 ### What we need to log
 
-These docs are generated using [Hugo](https://gohugo.io/), this wiki is a static site. User requests do not trigger internal events like modern webapps. The only relevant thing to be logged is which visitors are requesting our page.
+These docs are generated using [Hugo](https://gohugo.io/), this wiki is a static site (here is the [repo](https://git.daedalus-project.io/docs/Daedalus-Project-Docs)). User requests do not trigger internal events like modern webapps. The only relevant thing to be logged is which visitors are requesting our page.
 
 ### Purpose
 
