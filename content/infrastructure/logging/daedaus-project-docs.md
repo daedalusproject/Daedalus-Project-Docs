@@ -276,3 +276,12 @@ Kibana dashboard is available publicly:
 * URL: [https://kibana.daedalus-project.io](https://kibana.daedalus-project.io/s/daedalus-project-docs-develop/app/kibana#/dashboards?_g=\(\))
 * User: guest
 * Password: seameguest
+
+### Final thoughts
+
+This document is not completed yet:
+
+* How AWS IAM has been configured to write only in our S3 bucket has to be documented.
+* How Elasticsearch has been configured and secured has to be documented.
+* How Elasticsearch indexes, pipelines and users have been created has to be documented.
+* How Elasticsearch are purged has to be documented.
