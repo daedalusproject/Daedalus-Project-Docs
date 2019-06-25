@@ -22,7 +22,7 @@ Here are some log recollection tools:
 * [Fluent Bit](https://fluentbit.io/)
 * [Loki](https://grafana.com/loki)
 
-After searching about this tools, Loki was rejected, it is a very promising and interesting project but it is not mature yet (June 2019). On the other hand, Fluentd is a [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) member project and it seems to be lighter than Logstash.
+After searching about this tools, Loki was rejected, it is a very promising and interesting project but it is not mature yet (June 2019). On the other hand, Fluentd is a [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) member project and it seems to be lighter than Logstash (this service has not been tested yet).
 
 First Implementation suggestion was the following:
 
@@ -46,7 +46,7 @@ A second implementation suggestion comes:
 It wouldn't be the first time 20Gb log file fills our filesystem, if there are log files they must be rotated and purged. Since our Nginx server is running inside Docker container there is no cron executing log rotate. Original Kubernetes pod becomes a three container pod:
 
 * Nginx serves content and writes logs against files.
-* Logrotate container execute cron tasks for ratings Nginx Logs
+* Logrotate container execute cron tasks for rotating Nginx Logs
 * Fluentbit container read logs and tries to sent them to Fluentd.
 
 Each container needs to see processes running inside pod and share log folder:
@@ -142,6 +142,37 @@ spec:
           allowPrivilegeEscalation: false
 ```
 
+Nginx log format has been changed to JSON format. Parameters returned have been updated, here is the current **log_format**:
+```
+   log_format json_log escape=json '{"connection_serial_number":$connection,'
+                                    '"number_of_requests":$connection_requests,'
+                                    '"response_status":"$status",'
+                                    '"body_bytes_sent":$body_bytes_sent,'
+                                    '"content_type":"$content_type",'
+                                    '"host":"$host",'
+                                    '"host_name":"$hostname",'
+                                    '"query_string":"$query_string",'
+                                    '"client_address":"$remote_addr",'
+                                    '"http_ar_real_proto":"$http_ar_real_proto",'
+                                    '"http_ar_real_ip":"$http_ar_real_ip",'
+                                    '"http_ar_real_country":"$http_ar_real_country",'
+                                    '"request":"$request",'
+                                    '"request_time":$request_time,'
+                                    '"request_id":"$request_id",'
+                                    '"request_length":$request_length,'
+                                    '"request_method":"$request_method",'
+                                    '"request_uri":"$request_uri",'
+                                    '"request_body":"$request_body",'
+                                    '"scheme":"$scheme",'
+                                    '"server_addr":"$server_addr",'
+                                    '"server_protocol":"$server_protocol",'
+                                    '"http_user_agent":"$http_user_agent",'
+                                    '"time_iso":"$time_iso8601",'
+                                    '"time_msec":"$msec",'
+                                    '"url":"$scheme://$host$request_uri",'
+                                    '"uri":"$uri"}';
+```
+
 Remember that when Nginx logs are rotated, Nginx needs to know it for releasing file descriptors and use new log files. Inside our logrotate container there is no Nginx process so logrotate needs to find it.
 
 Logrotate Nginx config
@@ -191,15 +222,27 @@ Fluentd service will send logs to Elasticsearch and AWS S3 bucket:
 <match tail.0 >
   @type copy
   <store>
-    @type stdout
+    @type s3
+    aws_key_id _@_AWS_KEY_ID_@_
+    aws_sec_key _@_AWS_SECRET_KEY_@_
+    s3_bucket _@_S3_BUCKET_NAME_@_
+    s3_region eu-west-1
+    path logs/
+    <buffer tag,time>
+      @type file
+      path /tmp/fluents3
+      timekey 300
+      timekey_wait 10m
+      timekey_use_utc true # use utc
+      chunk_limit_size 5m
+    </buffer>
   </store>
   <store>
-    type elasticsearch
+    @type elasticsearch
     host _@_ELASTICSEARCH_HOST_@_
     port 9200
     user _@_ELASTICSEARCH_USER_@_
     password _@_ELASTICSEARCH_PASSWORD_@_
-    scheme https
     index_name _@_ELASTICSEARCH_INDEX_@_
     pipeline geoip
   </store>
@@ -211,8 +254,25 @@ This is the Stack suggested for collecting this wiki logs:
   <img src="/images/DaedalusProjectLogColectorStack.jpg" alt="Log Colector Stack" />
 </center>
 
-### Results
+### Visualizing results
+
+Results are stored in AWS S3 Bucket and Elasticsearch instance:
+
+* S3 Bucket is used for "infinite" log storage.
+* Elasticsearch is used for real time visualization.
+
+If there is new data, every 5 minutes fluentd sends logs to S3 bucket:
+<center>
+  <img src="/images/DaedalusProjectLogColectorResultsS3.jpg" alt="S3 Log Colector Results" />
+</center>
+
+For visualizing almost real time data a Kibana dashboard has been created.
 <center>
   <img src="/images/DaedalusProjectLogColectorResults.jpg" alt="Log Colector Results" />
 </center>
 
+Kibana dashboard is available publicly:
+
+* URL: [https://kibana.daedalus-project.io](https://kibana.daedalus-project.io/s/daedalus-project-docs-develop/app/kibana#/dashboards?_g=\(\))
+* User: guest
+* Password: seameguest
