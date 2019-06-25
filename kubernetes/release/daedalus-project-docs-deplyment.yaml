@@ -69,6 +69,8 @@ spec:
           requests:
             cpu: 20m
             memory: 20Mi
+        securityContext:
+          allowPrivilegeEscalation: false
       - name: daedalus-project-docs-td-agent-bit
         image: daedalusproject/daedalus-project-docs-td-agent-bit:__IMAGE_TAG__
         volumeMounts:
