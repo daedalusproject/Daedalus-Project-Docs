@@ -57,6 +57,12 @@ spec:
                 - >
                   /bin/chmod 755 /var/log/nginx;
                   /bin/chown root:adm /var/log/nginx;
+          preStop:
+            exec:
+              command:
+                  - "/usr/sbin/nginx"
+                  - "-s"
+                  - "quit"
       - name: daedalus-project-docs-logrotate
         image: daedalusproject/daedalus-project-docs-logrotate:__IMAGE_TAG__
         volumeMounts:
@@ -85,3 +91,4 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+      terminationGracePeriodSeconds: 150
