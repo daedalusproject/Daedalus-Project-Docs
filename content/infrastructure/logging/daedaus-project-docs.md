@@ -112,6 +112,12 @@ spec:
                 - >
                   /bin/chmod 755 /var/log/nginx;
                   /bin/chown root:adm /var/log/nginx;
+          preStop:
+            exec:
+              command:
+                  - "/usr/sbin/nginx"
+                  - "-s"
+                  - "quit"
       - name: daedalus-project-docs-logrotate
         image: daedalusproject/daedalus-project-docs-logrotate:__IMAGE_TAG__
         volumeMounts:
@@ -140,6 +146,7 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+      terminationGracePeriodSeconds: 150
 ```
 
 Nginx log format has been changed to JSON format. Parameters returned have been updated, here is the current **log_format**:
@@ -196,7 +203,8 @@ Logrotate Nginx config
 Fluentbit only reads log files and forwards recollected info to fluentd service:
 ```
 [SERVICE]
-    Flush        1
+    Flush        60
+    Grace        120
     Parsers_File parsers.conf
 
 [INPUT]
@@ -213,7 +221,7 @@ Fluentbit only reads log files and forwards recollected info to fluentd service:
 ```
 
 Fluentd service will send logs to Elasticsearch and AWS S3 bucket:
-```
+```xml
 <source>
   @type forward
   bind 0.0.0.0
@@ -227,14 +235,16 @@ Fluentd service will send logs to Elasticsearch and AWS S3 bucket:
     aws_sec_key _@_AWS_SECRET_KEY_@_
     s3_bucket _@_S3_BUCKET_NAME_@_
     s3_region eu-west-1
-    path logs/
+    path develop-logs/
     <buffer tag,time>
       @type file
       path /tmp/fluents3
       timekey 300
       timekey_wait 10m
+      flush_interval 5m
       timekey_use_utc true # use utc
       chunk_limit_size 5m
+      flush_at_shutdown true
     </buffer>
   </store>
   <store>
