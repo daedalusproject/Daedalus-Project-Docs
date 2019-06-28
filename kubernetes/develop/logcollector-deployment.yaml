@@ -38,5 +38,5 @@ spec:
       volumes:
       - name: logcollector-config
         secret:
-          secretName: logcollector-config
+          secretName: logcollector-develop-config
       terminationGracePeriodSeconds: 160
