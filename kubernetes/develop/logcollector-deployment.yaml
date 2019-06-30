@@ -23,7 +23,7 @@ spec:
         resources:
           limits:
             cpu: 80m
-            memory: 120Mi
+            memory: 180Mi
           requests:
             cpu: 80m
             memory: 120Mi
@@ -38,5 +38,5 @@ spec:
       volumes:
       - name: logcollector-config
         secret:
-          secretName: logcollector-config
+          secretName: logcollector-develop-config
       terminationGracePeriodSeconds: 160
