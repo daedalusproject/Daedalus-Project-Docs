@@ -105,9 +105,7 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - Minion01IP
-      - Minion02IP
-      - Minion03IP
+      - Minion01IP-Minion03IP (for example 10.10.0.100-10.10.0.103)
 ```
 
 Deploy metallb
