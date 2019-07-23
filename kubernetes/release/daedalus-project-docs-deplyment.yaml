@@ -57,6 +57,8 @@ spec:
                 - >
                   /bin/chmod 755 /var/log/nginx;
                   /bin/chown root:adm /var/log/nginx;
+                  MODIFIED_DATE=$(cat /var/www/datecontentcreated);
+                  /usr/bin/find /var/www/daedalus-project-docs -exec touch -a -m -t $MODIFIED_DATE {} \;
           preStop:
             exec:
               command:
