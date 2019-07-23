@@ -10,7 +10,8 @@ COPY --chown=www-data:www-data public /var/www/daedalus-project-docs
 # Forward request and error logs to docker log collector
 RUN chown -R www-data:www-data /var/lib/nginx \
     && mkdir -p /var/run/nginx \
-    && chown www-data:www-data /var/run/nginx
+    && chown www-data:www-data /var/run/nginx \
+    && date +%Y%m%d%H%M > /var/www/datecontentcreated
 
 EXPOSE 80
 
