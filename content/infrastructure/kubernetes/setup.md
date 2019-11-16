@@ -201,10 +201,12 @@ Check top:
 ```
 k top nodes
 NAME                         CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
-master01.k8s.windmaker.net   130m         6%     713Mi           37%
-minion01.k8s.windmaker.net   57m          2%     514Mi           27%
-minion02.k8s.windmaker.net   63m          3%     463Mi           24%
-minion03.k8s.windmaker.net   55m          2%     472Mi           24%
+master01.k8s.windmaker.net   129m         3%     550Mi           14%
+minion01.k8s.windmaker.net   39m          0%     285Mi           7%
+minion02.k8s.windmaker.net   32m          0%     243Mi           6%
+minion03.k8s.windmaker.net   37m          0%     258Mi           6%
+minion04.k8s.windmaker.net   58m          1%     253Mi           6%
+minion05.k8s.windmaker.net   65m          1%     251Mi           6%
 ```
 
 ### Install Nginx Ingress Controller
