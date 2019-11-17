@@ -211,25 +211,21 @@ Create the following service:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-nginx
+  name: ingress
   namespace: ingress-nginx
   labels:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app: ingress-nginx
 spec:
   type: LoadBalancer
   ports:
-    - name: http
-      port: 80
-      targetPort: 80
-      protocol: TCP
-    - name: https
-      port: 443
-      targetPort: 443
-      protocol: TCP
+  - name: http
+    port: 80
+    targetPort: http
+  - name: https
+    port: 443
+    targetPort: https
   selector:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
+    app: ingress-nginx
 ```
 
 #### Modify externalTrafficPolicy
