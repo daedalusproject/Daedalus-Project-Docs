@@ -23,6 +23,11 @@ Three namespaces will be created:
 
 Service account *gitlab-daedalus-project-docs-deployer* is able to create and update resources in all these namespaces.
 
+Do not forget to get user token:_
+```
+kubectl -n daedalus-project-docs describe secrets $(kubectl -n daedalus-project-docs get secret | grep gitlab-daedalus-project-docs-deployer | awk  '{print $1}') | grep token: | awk  '{print $2}'
+```
+
 ## Environments
 
 There are three environments, one for each namespace:
