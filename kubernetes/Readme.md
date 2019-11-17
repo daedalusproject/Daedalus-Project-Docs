@@ -23,9 +23,9 @@ Three namespaces will be created:
 
 Service account *gitlab-daedalus-project-docs-deployer* is able to create and update resources in all these namespaces.
 
-Do not forget to get user token:_
+Do not forget to get cluster cert:_
 ```
-kubectl -n daedalus-project-docs describe secrets $(kubectl -n daedalus-project-docs get secret | grep gitlab-daedalus-project-docs-deployer | awk  '{print $1}') | grep token: | awk  '{print $2}'
+kubectl config view --raw -o json | jq -r '.clusters[0].cluster."certificate-authority-data"' | tr -d '"' | base64 --decode
 ```
 
 ## Environments
