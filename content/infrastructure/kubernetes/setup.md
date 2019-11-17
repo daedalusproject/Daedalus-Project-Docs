@@ -45,7 +45,9 @@ mkdir -p /usr/local/libexec/crio/
 ln -s /usr/bin/conmon /usr/libexec/crio/conmon
 ```
 
-Edit */etc/crio/crio.conf* and chenge cgroups option from:
+### Configure crio
+
+Edit */etc/crio/crio.conf* and change cgroup_manager option from:
 ```
 cgroup_manager = "systemd"
 ```
@@ -55,7 +57,14 @@ to:
 cgroup_manager = "cgroupfs"
 ```
 
-Edit */etc/cni/net.d/100-crio-bridge.conf* and change IP range:
+Enable also docker.io registry:
+```
+registries = [
+  "docker.io",
+]
+```
+
+Edit */etc/cni/net.d/100-crio-bridge.conf* and change IP range (for the same we are going to use in Kubernetes):
 ```
 {
     "cniVersion": "0.3.0",
@@ -81,7 +90,7 @@ systemctl start crio
 
 ### Init cluster
 
-In *master01* init the cluster:
+In *master01*, initiate the cluster:
 ```
 kubeadm init --pod-network-cidr=10.244.0.0/16 --service-cidr=10.244.0.0/20 
 ```
@@ -119,24 +128,6 @@ kubectl label node minion02.k8s.windmaker.net node-role.kubernetes.io/worker=wor
 kubectl label node minion03.k8s.windmaker.net node-role.kubernetes.io/worker=worker
 kubectl label node minion04.k8s.windmaker.net node-role.kubernetes.io/worker=worker
 kubectl label node minion05.k8s.windmaker.net node-role.kubernetes.io/worker=worker
-```
-
-### Configure CoreDNS proxy
-
-Make CoreDNS proxy public request over /etc/hosts:
-
-```
-kubectl edit cm coredns -n kube-system
-```
-
-Place the following line:
-```
-proxy . /etc/resolv.conf
-```
-
-Restart CoreDNS:
-```
-kubectl get pods -n kube-system -oname |grep coredns |xargs kubectl delete -n kube-system
 ```
 
 ### Install MetalLB
@@ -212,11 +203,10 @@ minion05.k8s.windmaker.net   65m          1%     251Mi           6%
 ### Install Nginx Ingress Controller
 
 ```
-kubectl create namespace ingress-nginx
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 ```
 
-Create service:
+Create the following service:
 ```
 apiVersion: v1
 kind: Service
