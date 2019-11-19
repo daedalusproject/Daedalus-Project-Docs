@@ -72,7 +72,7 @@ registries = [
 Edit */etc/cni/net.d/100-crio-bridge.conf* and change IP range (for the same we are going to use in Kubernetes):
 ```
 {
-    "cniVersion": "0.3.0",
+    "cniVersion": "0.3.1",
     "name": "crio-bridge",
     "type": "bridge",
     "bridge": "cni0",
