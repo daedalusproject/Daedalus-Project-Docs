@@ -23,6 +23,11 @@ Three namespaces will be created:
 
 Service account *gitlab-daedalus-project-docs-deployer* is able to create and update resources in all these namespaces.
 
+Do not forget to get cluster cert:_
+```
+kubectl config view --raw -o json | jq -r '.clusters[0].cluster."certificate-authority-data"' | tr -d '"' | base64 --decode
+```
+
 ## Environments
 
 There are three environments, one for each namespace:
