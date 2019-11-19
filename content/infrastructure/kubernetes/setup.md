@@ -24,6 +24,11 @@ minion05.k8s.windmaker.net
 
 In each machine run:
 ```
+cat > /etc/modules-load.d/crio.conf <<EOF
+overlay
+br_netfilter
+EOF
+
 modprobe overlay
 modprobe br_netfilter
 
