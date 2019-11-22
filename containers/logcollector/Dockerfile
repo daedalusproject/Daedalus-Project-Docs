@@ -1,4 +1,4 @@
-FROM daedalusproject/base_td_agent:201906201803
+FROM daedalusproject/base_td_agent:201911221930
 MAINTAINER Álvaro Castellano Vela <alvaro.castellano.vela@gmail.com>
 
 COPY containers/logcollector/conf/td-agent.conf /etc/td-agent/td-agent.conf
